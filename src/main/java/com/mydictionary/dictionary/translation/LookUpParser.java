@@ -7,20 +7,26 @@ import java.util.List;
 
 public class LookUpParser {
 
-    //todo: Should I do it singleton?
-    LookUpParser(){}
+    private final static double MINIMAL_CONFIDENCE_VALUE = 0.1;
 
-    public List<String> parse(String jsonToParse){
+    LookUpParser() {
+    }
+
+    public List<String> parse(String jsonToParse) {
         return parse(new JsonParser().parse(jsonToParse));
     }
 
-    public List<String> parse(JsonElement jsonToParse){
+    public List<String> parse(JsonElement jsonToParse) {
         JsonObject jsonObject = jsonToParse.getAsJsonArray().get(0).getAsJsonObject();
         JsonArray arrayOfTranslations = jsonObject.getAsJsonArray("translations");
         List<String> result = new ArrayList<>();
+
         for (JsonElement translationElement : arrayOfTranslations) {
+
             JsonObject translationObject = translationElement.getAsJsonObject();
-            result.add(translationObject.get("normalizedTarget").getAsString());
+            if (translationObject.get("confidence").getAsDouble() >= MINIMAL_CONFIDENCE_VALUE) {
+                result.add(translationObject.get("normalizedTarget").getAsString());
+            }
         }
         return result;
     }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.squareup.okhttp.*;
 
-public class BingTranslator implements Translator{
+public class BingTranslator implements Translator {
 
     private final static String BING_SUBSCRIPTION_KEY = System.getenv("BING_SUBSCRIPTION_KEY");
     private final static String LOCATION = "westeurope";
@@ -54,12 +54,14 @@ public class BingTranslator implements Translator{
     }
 
     @Override
-    public List<String> translate(String textToTranslate) throws IOException{
+    public List<String> translate(String textToTranslate) throws IOException {
         String translateResponse = postRequest(translateUrl, textToTranslate);
         String lookupResponse = postRequest(lookupUrl, textToTranslate);
         String mainTranslate = translateParser.parse(translateResponse);
         List<String> listOfOtherTranslations = lookUpParser.parse(lookupResponse);
-        listOfOtherTranslations.add(0, mainTranslate);
+        if(listOfOtherTranslations.stream().noneMatch(x->x.equalsIgnoreCase(mainTranslate))) {
+            listOfOtherTranslations.add(0, mainTranslate);
+        }
         return listOfOtherTranslations;
     }
 }

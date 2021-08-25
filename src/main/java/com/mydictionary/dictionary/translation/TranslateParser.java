@@ -5,12 +5,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class TranslateParser {
 
-    //todo: Should I do it singleton?
     TranslateParser() {}
 
     public String parse(String jsonToParse){
