@@ -8,9 +8,21 @@ import java.sql.SQLException;
 
 public class HikariConnectionPool implements ConnectionPool{
 
+    private static HikariConnectionPool instance;
+
     private HikariDataSource dataSource;
 
-    public void init(){
+    private HikariConnectionPool(){}
+
+    public static synchronized HikariConnectionPool getInstance() {
+        if(instance==null){
+            instance = new HikariConnectionPool();
+            instance.init();
+        }
+        return instance;
+    }
+
+    private void init(){
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:postgresql://localhost:5432/dictionary");
         config.setUsername("db_user");
@@ -26,6 +38,7 @@ public class HikariConnectionPool implements ConnectionPool{
     public void close() throws Exception {
         synchronized (this) {
             dataSource.close();
+            instance = null;
         }
     }
 }

@@ -20,8 +20,7 @@ public class AdminDao implements AutoCloseable {
     private final ConnectionPool connectionPool;
 
     private AdminDao(){
-        connectionPool = ConnectionPool.create();
-        connectionPool.init();
+        connectionPool = ConnectionPool.getInstance();
     }
 
     public static AdminDao getInstance(){

@@ -6,13 +6,10 @@ import com.mydictionary.dictionary.model.User;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 public class PostgresDataManager implements DataManager{
 
-    final String INSERT_USER_QUERY =
-            "INSERT INTO app_user(email, passw_hash) VALUES('%s','%s')";
-    final String INSERT_TRANSLATION_QUERY =
+    private final static String INSERT_TRANSLATION_QUERY =
             "INSERT INTO user_dictionary VALUES(%d, '%s', '%s', '%s', '%s')";
 
     private static PostgresDataManager instance;
@@ -20,11 +17,10 @@ public class PostgresDataManager implements DataManager{
     private final ConnectionPool connectionPool;
 
     private PostgresDataManager(){
-        connectionPool = ConnectionPool.create();
-        connectionPool.init();
+        connectionPool = ConnectionPool.getInstance();
     }
 
-    public static PostgresDataManager getInstance(){
+    public static synchronized PostgresDataManager getInstance(){
         if(instance == null){
             instance = new PostgresDataManager();
         }
@@ -49,33 +45,8 @@ public class PostgresDataManager implements DataManager{
     }
 
     @Override
-    public void save(User user) throws SQLException{
-        try (Connection connection = connectionPool.getConnection()) {
-            try (Statement dataQuery = connection.createStatement()) {
-                    dataQuery.execute(String.format(INSERT_USER_QUERY,
-                            user.getEmail(), user.getPassw_hash()));
-            }
-        }
-    }
-
-    @Override
-    public User readUser(int id) throws SQLException{
-        return null;
-    }
-
-    @Override
-    public List<User> readAllUsers() throws SQLException{
-        return null;
-    }
-
-    @Override
     public Translations readTranslationByWord(String word) throws SQLException{
         return null;
-    }
-
-    @Override
-    public void deleteUser(int id) throws SQLException{
-
     }
 
     @Override
