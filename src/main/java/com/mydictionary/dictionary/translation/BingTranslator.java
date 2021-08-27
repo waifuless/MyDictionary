@@ -1,9 +1,9 @@
 package com.mydictionary.dictionary.translation;
 
-import java.io.*;
-import java.util.List;
-
 import com.squareup.okhttp.*;
+
+import java.io.IOException;
+import java.util.List;
 
 public class BingTranslator implements Translator {
 
@@ -12,34 +12,38 @@ public class BingTranslator implements Translator {
 
     private final LookUpParser lookUpParser;
     private final TranslateParser translateParser;
+    private final HttpUrl translateUrl;
+    private final HttpUrl lookupUrl;
+    private final OkHttpClient client;
 
     BingTranslator() {
         lookUpParser = new LookUpParser();
         translateParser = new TranslateParser();
+        client = new OkHttpClient();
+        translateUrl = makeUrl(TranslateFunction.TRANSLATE, Language.ENGLISH, Language.RUSSIAN);
+        lookupUrl = makeUrl(TranslateFunction.LOOKUP, Language.ENGLISH, Language.RUSSIAN);
     }
 
-    private final HttpUrl translateUrl = new HttpUrl.Builder()
-            .scheme("https")
-            .host("api.cognitive.microsofttranslator.com")
-            .addPathSegment("/translate")
-            .addQueryParameter("api-version", "3.0")
-            .addQueryParameter("from", "en")
-            .addQueryParameter("to", "ru")
-            .build();
+    BingTranslator(Language sourceLanguage, Language resultLanguage) {
+        lookUpParser = new LookUpParser();
+        translateParser = new TranslateParser();
+        client = new OkHttpClient();
+        translateUrl = makeUrl(TranslateFunction.TRANSLATE, sourceLanguage, resultLanguage);
+        lookupUrl = makeUrl(TranslateFunction.LOOKUP, sourceLanguage, resultLanguage);
+    }
 
-    private final HttpUrl lookupUrl = new HttpUrl.Builder()
-            .scheme("https")
-            .host("api.cognitive.microsofttranslator.com")
-            .addPathSegment("/dictionary/lookup")
-            .addQueryParameter("api-version", "3.0")
-            .addQueryParameter("from", "en")
-            .addQueryParameter("to", "ru")
-            .build();
+    @Override
+    public List<String> translate(String textToTranslate) throws IOException {
+        String translateResponse = postRequest(translateUrl, textToTranslate);
+        String lookupResponse = postRequest(lookupUrl, textToTranslate);
+        String mainTranslate = translateParser.parse(translateResponse);
+        List<String> listOfOtherTranslations = lookUpParser.parse(lookupResponse);
+        if (listOfOtherTranslations.stream().noneMatch(x -> x.equalsIgnoreCase(mainTranslate))) {
+            listOfOtherTranslations.add(0, mainTranslate);
+        }
+        return listOfOtherTranslations;
+    }
 
-    // Instantiates the OkHttpClient.
-    private final OkHttpClient client = new OkHttpClient();
-
-    // This function performs a POST request.
     private String postRequest(HttpUrl url, String textToPost) throws IOException {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType,
@@ -53,15 +57,25 @@ public class BingTranslator implements Translator {
         return response.body().string();
     }
 
-    @Override
-    public List<String> translate(String textToTranslate) throws IOException {
-        String translateResponse = postRequest(translateUrl, textToTranslate);
-        String lookupResponse = postRequest(lookupUrl, textToTranslate);
-        String mainTranslate = translateParser.parse(translateResponse);
-        List<String> listOfOtherTranslations = lookUpParser.parse(lookupResponse);
-        if(listOfOtherTranslations.stream().noneMatch(x->x.equalsIgnoreCase(mainTranslate))) {
-            listOfOtherTranslations.add(0, mainTranslate);
+    private HttpUrl makeUrl(TranslateFunction translateFunction, Language sourceLanguage, Language resultLanguage) {
+        return new HttpUrl.Builder()
+                .scheme("https")
+                .host("api.cognitive.microsofttranslator.com")
+                .addPathSegment(translateFunction.functionPath)
+                .addQueryParameter("api-version", "3.0")
+                .addQueryParameter("from", sourceLanguage.code)
+                .addQueryParameter("to", resultLanguage.code)
+                .build();
+    }
+
+    private enum TranslateFunction {
+        TRANSLATE("/translate"),
+        LOOKUP("/dictionary/lookup");
+
+        final String functionPath;
+
+        TranslateFunction(String function) {
+            functionPath = function;
         }
-        return listOfOtherTranslations;
     }
 }

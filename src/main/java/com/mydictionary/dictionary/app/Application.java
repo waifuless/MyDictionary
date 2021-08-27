@@ -1,5 +1,6 @@
 package com.mydictionary.dictionary.app;
 
+import com.mydictionary.dictionary.translation.Language;
 import com.mydictionary.dictionary.translation.Translator;
 
 import java.io.BufferedReader;
@@ -15,7 +16,7 @@ public class Application {
         try {
             String strToTranslate;
             List<String> translations;
-            Translator translator = Translator.create();
+            Translator translator = Translator.create(Language.RUSSIAN, Language.ENGLISH);
             String answer;
             do {
                 System.out.println("Введите слово для перевода:");
