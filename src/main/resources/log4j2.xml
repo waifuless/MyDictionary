@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%highlight{%d{HH:mm:ss.SSS} %-6level %logger{36}.%M() @%L - %msg%n}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=Bright Cyan, DEBUG=green bold, TRACE=Bright black}"/>
+        </Console>
+        <RollingFile name="RollingFile"
+                     fileName="logs/log.log"
+                     filePattern="logs/log-%d{yyyy-MM-dd}.%i.log"
+                     ignoreExceptions="false">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-6level %logger{36}.%M() @%L - %msg%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="1MB" />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="TRACE">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+        </Root>
+    </Loggers>
+</Configuration>
