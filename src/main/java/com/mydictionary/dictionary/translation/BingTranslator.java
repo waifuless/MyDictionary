@@ -17,16 +17,16 @@ public class BingTranslator implements Translator {
     private final OkHttpClient client;
 
     BingTranslator() {
-        lookUpParser = new LookUpParser();
-        translateParser = new TranslateParser();
+        lookUpParser = LookUpParser.getInstance();
+        translateParser = TranslateParser.getInstance();
         client = new OkHttpClient();
         translateUrl = makeUrl(TranslateFunction.TRANSLATE, Language.ENGLISH, Language.RUSSIAN);
         lookupUrl = makeUrl(TranslateFunction.LOOKUP, Language.ENGLISH, Language.RUSSIAN);
     }
 
     BingTranslator(Language sourceLanguage, Language resultLanguage) {
-        lookUpParser = new LookUpParser();
-        translateParser = new TranslateParser();
+        lookUpParser = LookUpParser.getInstance();
+        translateParser = TranslateParser.getInstance();
         client = new OkHttpClient();
         translateUrl = makeUrl(TranslateFunction.TRANSLATE, sourceLanguage, resultLanguage);
         lookupUrl = makeUrl(TranslateFunction.LOOKUP, sourceLanguage, resultLanguage);

@@ -12,7 +12,16 @@ public class LookUpParser {
 
     private final static double MINIMAL_CONFIDENCE_VALUE = 0.1;
 
-    LookUpParser() {
+    private static LookUpParser instance;
+
+    private LookUpParser() {
+    }
+
+    static LookUpParser getInstance() {
+        if(instance==null){
+            instance = new LookUpParser();
+        }
+        return instance;
     }
 
     public List<String> parse(String jsonToParse) {

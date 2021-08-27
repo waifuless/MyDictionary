@@ -8,7 +8,16 @@ import com.google.gson.JsonParser;
 
 public class TranslateParser {
 
-    TranslateParser() {
+    private static TranslateParser instance;
+
+    private TranslateParser() {
+    }
+
+    static TranslateParser getInstance() {
+        if(instance==null){
+            instance = new TranslateParser();
+        }
+        return instance;
     }
 
     public String parse(String jsonToParse) {
