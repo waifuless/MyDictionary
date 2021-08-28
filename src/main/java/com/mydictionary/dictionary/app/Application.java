@@ -53,7 +53,7 @@ public class Application {
                         translationsToSave.add(translations.get(favoriteWordIndex - 1));
                     }
                     properties.setOrigin_word(strToTranslate);
-                    dataManager.save(properties, translations);
+                    dataManager.save(properties, translationsToSave);
                 }
                 Map<String,List<String>> userWords = dataManager.readAllTranslationsByProperties(properties);
                 for (Map.Entry<String, List<String>> entry : userWords.entrySet()) {

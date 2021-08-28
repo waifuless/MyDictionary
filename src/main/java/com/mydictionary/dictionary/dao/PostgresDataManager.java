@@ -15,7 +15,7 @@ import java.util.Map;
 public class PostgresDataManager implements DataManager {
 
     private final static String INSERT_TRANSLATION_QUERY =
-            "INSERT INTO user_dictionary VALUES(%d, '%s', '%s', '%s', '%s')";
+            "INSERT INTO user_dictionary VALUES(%d, '%s', '%s', '%s', '%s') ON CONFLICT DO NOTHING;";
     private final static String READ_WORD_TRANSLATIONS_QUERY =
             "SELECT translation FROM user_dictionary " +
                     "WHERE user_id=%d AND origin_word='%s' AND src_lang_code='%s' AND dest_lang_code='%s'";
