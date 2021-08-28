@@ -1,19 +1,14 @@
 package com.mydictionary.dictionary.app;
 
-import com.mydictionary.dictionary.dao.AdminDao;
 import com.mydictionary.dictionary.dao.DataManager;
-import com.mydictionary.dictionary.model.TranslationElement;
-import com.mydictionary.dictionary.model.Translations;
 import com.mydictionary.dictionary.translation.Translator;
 
-import javax.xml.crypto.Data;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 /**
  * Alfa class for test the system. Should be deleted in complete application
@@ -31,7 +26,6 @@ public class Application {
             int []favoriteWordsIndexes;
             List<String> translationsToSave;
             DataManager dataManager = DataManager.getInstance();
-            AdminDao adminDao = AdminDao.getInstance();
             final int USER_ID = 2;
             do {
                 System.out.println("Введите слово для перевода:");
@@ -52,14 +46,6 @@ public class Application {
                     for (Integer favoriteWordIndex : favoriteWordsIndexes) {
                         translationsToSave.add(translations.get(favoriteWordIndex - 1));
                     }
-                    if (!translationsToSave.isEmpty()) {
-                        dataManager.save(new Translations(USER_ID, strToTranslate,
-                                translationsToSave, "en", "ru"));
-                    }
-                }
-                System.out.println("user_dictionary now:");
-                for (TranslationElement translationElement : adminDao.findTranslationElementList()) {
-                    System.out.println(translationElement);
                 }
                 System.out.println("Хотите продолжить?(1\\0)");
                 answer = keyboard.readLine();
