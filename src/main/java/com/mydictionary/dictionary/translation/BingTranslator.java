@@ -34,8 +34,9 @@ public class BingTranslator implements Translator {
 
     @Override
     public List<String> translate(String textToTranslate) throws IOException {
-        String translateResponse = postRequest(translateUrl, textToTranslate);
-        String lookupResponse = postRequest(lookupUrl, textToTranslate);
+        String stripText = textToTranslate.strip();
+        String translateResponse = postRequest(translateUrl, stripText);
+        String lookupResponse = postRequest(lookupUrl, stripText);
         String mainTranslate = translateParser.parse(translateResponse);
         List<String> listOfOtherTranslations = lookUpParser.parse(lookupResponse);
         if (listOfOtherTranslations.stream().noneMatch(x -> x.equalsIgnoreCase(mainTranslate))) {
