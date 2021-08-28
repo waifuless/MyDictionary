@@ -5,7 +5,8 @@ public class User {
     private String email;
     private String passw_hash;
 
-    public User(){}
+    public User() {
+    }
 
     public User(int user_id, String email, String passw_hash) {
         this.email = email;

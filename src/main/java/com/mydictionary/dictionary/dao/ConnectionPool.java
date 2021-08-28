@@ -5,9 +5,9 @@ import java.sql.SQLException;
 
 public interface ConnectionPool extends AutoCloseable {
 
-    Connection getConnection() throws SQLException;
-
-    static ConnectionPool getInstance(){
+    static ConnectionPool getInstance() {
         return HikariConnectionPool.getInstance();
     }
+
+    Connection getConnection() throws SQLException;
 }

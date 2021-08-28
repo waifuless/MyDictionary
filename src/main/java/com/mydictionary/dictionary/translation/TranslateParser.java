@@ -14,7 +14,7 @@ public class TranslateParser {
     }
 
     static TranslateParser getInstance() {
-        if(instance==null){
+        if (instance == null) {
             instance = new TranslateParser();
         }
         return instance;

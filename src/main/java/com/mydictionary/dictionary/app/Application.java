@@ -17,13 +17,13 @@ public class Application {
 
     private final static BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
 
-    public static void main(String[] args) throws  Exception{
+    public static void main(String[] args) throws Exception {
         try {
             String strToTranslate;
             List<String> translations;
             Translator translator = Translator.create();
             String answer;
-            int []favoriteWordsIndexes;
+            int[] favoriteWordsIndexes;
             List<String> translationsToSave;
             DataManager dataManager = DataManager.getInstance();
             final int USER_ID = 2;
@@ -33,11 +33,11 @@ public class Application {
                 translations = translator.translate(strToTranslate);
                 System.out.println("Список возможных переводов:");
                 for (int i = 0; i < translations.size(); i++) {
-                    System.out.printf("%d)%s\n", i+1, translations.get(i));
+                    System.out.printf("%d)%s\n", i + 1, translations.get(i));
                 }
                 System.out.println("Какие переводы вам понравились?");
                 answer = keyboard.readLine();
-                if(!answer.equals("")) {
+                if (!answer.equals("")) {
                     favoriteWordsIndexes = Arrays.stream(answer.split("\\s+"))
                             .distinct()
                             .mapToInt(Integer::parseInt)

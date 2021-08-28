@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class PostgresUserManager implements UserManager{
+public class PostgresUserManager implements UserManager {
 
     private final static String INSERT_USER_QUERY =
             "INSERT INTO app_user(email, passw_hash) VALUES('%s','%s')";
@@ -22,12 +22,12 @@ public class PostgresUserManager implements UserManager{
 
     private final ConnectionPool connectionPool;
 
-    private PostgresUserManager(){
+    private PostgresUserManager() {
         connectionPool = ConnectionPool.getInstance();
     }
 
-    public static synchronized PostgresUserManager getInstance(){
-        if(instance == null){
+    public static synchronized PostgresUserManager getInstance() {
+        if (instance == null) {
             instance = new PostgresUserManager();
         }
         return instance;
@@ -65,7 +65,7 @@ public class PostgresUserManager implements UserManager{
             try (Statement dataQuery = connection.createStatement()) {
                 dataQuery.execute(String.format(FIND_INDEX_BY_EMAIL_AND_PASSW_HASH_QUERY, email, passw_hash));
                 ResultSet resultSet = dataQuery.getResultSet();
-                if(resultSet.first()){
+                if (resultSet.first()) {
                     return resultSet.getInt(1);
                 }
                 return -1;

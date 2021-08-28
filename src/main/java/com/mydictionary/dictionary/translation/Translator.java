@@ -5,8 +5,6 @@ import java.util.List;
 
 public interface Translator {
 
-    List<String> translate(String textToTranslate) throws IOException;
-
     static Translator create() {
         return new BingTranslator();
     }
@@ -14,4 +12,6 @@ public interface Translator {
     static Translator create(Language sourceLanguage, Language resultLanguage) {
         return new BingTranslator(sourceLanguage, resultLanguage);
     }
+
+    List<String> translate(String textToTranslate) throws IOException;
 }

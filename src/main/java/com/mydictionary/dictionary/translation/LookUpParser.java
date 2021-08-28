@@ -18,7 +18,7 @@ public class LookUpParser {
     }
 
     static LookUpParser getInstance() {
-        if(instance==null){
+        if (instance == null) {
             instance = new LookUpParser();
         }
         return instance;

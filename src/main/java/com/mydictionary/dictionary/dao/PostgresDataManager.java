@@ -35,6 +35,13 @@ public class PostgresDataManager implements DataManager {
         connectionPool = ConnectionPool.getInstance();
     }
 
+    public static synchronized PostgresDataManager getInstance() {
+        if (instance == null) {
+            instance = new PostgresDataManager();
+        }
+        return instance;
+    }
+
     @Override
     public void save(PropertiesWithOriginWord properties, List<String> translations)
             throws SQLException {
@@ -61,7 +68,7 @@ public class PostgresDataManager implements DataManager {
                         properties.getUser_id(), properties.getOrigin_word(),
                         properties.getSrc_lang_code(), properties.getDest_lang_code()));
                 List<String> translations = new ArrayList<>();
-                while(resultSet.next()){
+                while (resultSet.next()) {
                     translations.add(resultSet.getString(1));
                 }
                 return translations;
@@ -79,12 +86,11 @@ public class PostgresDataManager implements DataManager {
                 Map<String, List<String>> wordWithTranslations = new HashMap<>();
                 String key;
                 List<String> values;
-                while(resultSet.next()){
+                while (resultSet.next()) {
                     key = resultSet.getString(1);
-                    if(wordWithTranslations.containsKey(key)){
-                       wordWithTranslations.get(key).add(resultSet.getString(2));
-                    }
-                    else{
+                    if (wordWithTranslations.containsKey(key)) {
+                        wordWithTranslations.get(key).add(resultSet.getString(2));
+                    } else {
                         values = new ArrayList<>();
                         values.add(resultSet.getString(2));
                         wordWithTranslations.put(key, values);
@@ -111,13 +117,6 @@ public class PostgresDataManager implements DataManager {
                 }
             }
         }
-    }
-
-    public static synchronized PostgresDataManager getInstance() {
-        if (instance == null) {
-            instance = new PostgresDataManager();
-        }
-        return instance;
     }
 
     @Override
