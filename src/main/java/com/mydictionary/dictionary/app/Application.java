@@ -1,6 +1,7 @@
 package com.mydictionary.dictionary.app;
 
 import com.mydictionary.dictionary.dao.DataManager;
+import com.mydictionary.dictionary.model.PropertiesWithOriginWord;
 import com.mydictionary.dictionary.translation.Translator;
 
 import java.io.BufferedReader;
@@ -9,6 +10,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Alfa class for test the system. Should be deleted in complete application
@@ -26,7 +28,11 @@ public class Application {
             int[] favoriteWordsIndexes;
             List<String> translationsToSave;
             DataManager dataManager = DataManager.getInstance();
+            PropertiesWithOriginWord properties = new PropertiesWithOriginWord();
             final int USER_ID = 2;
+            properties.setUser_id(USER_ID);
+            properties.setSrc_lang_code("en");
+            properties.setDest_lang_code("ru");
             do {
                 System.out.println("Введите слово для перевода:");
                 strToTranslate = keyboard.readLine();
@@ -46,6 +52,13 @@ public class Application {
                     for (Integer favoriteWordIndex : favoriteWordsIndexes) {
                         translationsToSave.add(translations.get(favoriteWordIndex - 1));
                     }
+                    properties.setOrigin_word(strToTranslate);
+                    dataManager.save(properties, translations);
+                }
+                Map<String,List<String>> userWords = dataManager.readAllTranslationsByProperties(properties);
+                for (Map.Entry<String, List<String>> entry : userWords.entrySet()) {
+                    System.out.println(entry.getKey()+":");
+                    entry.getValue().forEach(str -> System.out.println("\t"+str));
                 }
                 System.out.println("Хотите продолжить?(1\\0)");
                 answer = keyboard.readLine();
