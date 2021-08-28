@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.mydictionary.dictionary.dao.DictionaryColumn.*;
+
 public class PostgresDataManager implements DataManager {
 
     private final static String INSERT_TRANSLATION_QUERY =
@@ -69,7 +71,7 @@ public class PostgresDataManager implements DataManager {
                         properties.getSrc_lang_code(), properties.getDest_lang_code()));
                 List<String> translations = new ArrayList<>();
                 while (resultSet.next()) {
-                    translations.add(resultSet.getString(1));
+                    translations.add(resultSet.getString(TRANSLATION.columnName));
                 }
                 return translations;
             }
@@ -87,12 +89,12 @@ public class PostgresDataManager implements DataManager {
                 String key;
                 List<String> values;
                 while (resultSet.next()) {
-                    key = resultSet.getString(1);
+                    key = resultSet.getString(ORIGIN_WORD.columnName);
                     if (wordWithTranslations.containsKey(key)) {
-                        wordWithTranslations.get(key).add(resultSet.getString(2));
+                        wordWithTranslations.get(key).add(resultSet.getString(TRANSLATION.columnName));
                     } else {
                         values = new ArrayList<>();
-                        values.add(resultSet.getString(2));
+                        values.add(resultSet.getString(TRANSLATION.columnName));
                         wordWithTranslations.put(key, values);
                     }
                 }
@@ -123,4 +125,5 @@ public class PostgresDataManager implements DataManager {
     public void close() throws Exception {
         connectionPool.close();
     }
+
 }
