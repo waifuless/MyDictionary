@@ -26,4 +26,6 @@ public interface DataManager extends AutoCloseable {
 
     void deleteTranslations(PropertiesWithOriginWord properties,
                             List<String> translations) throws SQLException;
+
+    void deleteUnusedWords() throws SQLException;
 }

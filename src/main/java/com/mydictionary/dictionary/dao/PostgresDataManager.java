@@ -49,7 +49,14 @@ public class PostgresDataManager implements DataManager {
                     "AND origin_word.word = '%s'\n" +
                     "AND translation_word.word = '%s'\n" +
                     "AND origin_word.language = '%s'\n" +
-                    "AND translation_word.language = '%s';\n";
+                    "AND translation_word.language = '%s';";
+    private final static String DELETE_UNUSED_WORDS_QUERY =
+            "DELETE FROM dictionary\n"+
+                    "WHERE word_id NOT IN\n" +
+                    "(SELECT DISTINCT(word_id) FROM dictionary\n" +
+                    "INNER JOIN translation ON dictionary.word_id=translation.origin_word_id\n" +
+                    "OR dictionary.word_id=translation.translation_variant_id\n" +
+                    "INNER JOIN user_vocabulary ON user_vocabulary.translation_id = translation.translation_id)";
 
     private static PostgresDataManager instance;
 
@@ -150,6 +157,15 @@ public class PostgresDataManager implements DataManager {
                     dataQuery.execute(String.format(DELETE_WORD_TRANSLATIONS_QUERY,
                             user_id, word, translation, src_lang_code, dest_lang_code));
                 }
+            }
+        }
+    }
+
+    @Override
+    public void deleteUnusedWords() throws SQLException {
+        try (Connection connection = connectionPool.getConnection()) {
+            try (Statement dataQuery = connection.createStatement()) {
+                dataQuery.execute(DELETE_UNUSED_WORDS_QUERY);
             }
         }
     }

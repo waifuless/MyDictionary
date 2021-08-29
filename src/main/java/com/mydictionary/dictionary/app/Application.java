@@ -69,10 +69,14 @@ public class Application {
             } while (!answer.equals("0") && !answer.equalsIgnoreCase("n"));
              */
 
+            /*
             properties.setOrigin_word("dog");
             translations = new ArrayList<>();
             translations.add("собака");
             dataManager.deleteTranslations(properties, translations);
+
+             */
+            dataManager.deleteUnusedWords();
             //System.out.println(translations);
         } catch (Exception ex) {
             System.out.println("Something gone wrong");
