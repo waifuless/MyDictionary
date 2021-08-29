@@ -12,8 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.mydictionary.dictionary.dao.DictionaryColumn.*;
-
 public class PostgresDataManager implements DataManager {
 
     private final static int MINIMAL_INDEX_VALUE = 1;
@@ -27,18 +25,25 @@ public class PostgresDataManager implements DataManager {
             "INSERT INTO translation(origin_word_id, translation_variant_id) VALUES(%d, %d) RETURNING translation_id";
     private final static String INSERT_TRANSLATION_TO_USER_VOCABULARY_QUERY =
             "INSERT INTO user_vocabulary(user_id, translation_id) VALUES(%d, %d) ON CONFLICT DO NOTHING";
-
-
     private final static String READ_WORD_TRANSLATIONS_QUERY =
-            "SELECT translation FROM user_dictionary " +
-                    "WHERE user_id=%d AND origin_word='%s' AND src_lang_code='%s' AND dest_lang_code='%s'";
+            "SELECT translation_word.word FROM translation " +
+                    "INNER JOIN dictionary AS origin_word ON translation.origin_word_id = origin_word.word_id " +
+                    "INNER JOIN dictionary AS translation_word ON translation.translation_variant_id = translation_word.word_id " +
+                    "INNER JOIN user_vocabulary ON user_vocabulary.translation_id = translation.translation_id " +
+                    "WHERE user_id=%d AND origin_word.word='%s' AND origin_word.language='%s' AND translation_word.language='%s'";
     private final static String READ_ALL_TRANSLATIONS_QUERY =
-            "SELECT origin_word, translation FROM user_dictionary " +
-                    "WHERE user_id=%d AND src_lang_code='%s' AND dest_lang_code='%s'";
+            "SELECT origin_word.word, translation_word.word FROM translation " +
+                    "INNER JOIN dictionary AS origin_word ON translation.origin_word_id = origin_word.word_id " +
+                    "INNER JOIN dictionary AS translation_word ON translation.translation_variant_id = translation_word.word_id " +
+                    "INNER JOIN user_vocabulary ON user_vocabulary.translation_id = translation.translation_id " +
+                    "WHERE user_id=%d AND origin_word.language='%s' AND translation_word.language='%s'";
     private final static String DELETE_WORD_TRANSLATIONS_QUERY =
-            "DELETE FROM user_dictionary " +
-                    "WHERE user_id=%d AND origin_word='%s' AND translation='%s'" +
-                    " AND src_lang_code='%s' AND dest_lang_code='%s'";
+            "DELETE FROM user_vocabulary " +
+                    "INNER JOIN dictionary AS origin_word ON translation.origin_word_id = origin_word.word_id " +
+                    "INNER JOIN dictionary AS translation_word ON translation.translation_variant_id = translation_word.word_id " +
+                    "INNER JOIN user_vocabulary ON user_vocabulary.translation_id = translation.translation_id " +
+                    "WHERE user_id=%d AND origin_word.word='%s' AND translation_word.word='%s' " +
+                    "AND origin_word.language='%s' AND translation_word.language='%s'";
 
     private static PostgresDataManager instance;
 
@@ -93,7 +98,7 @@ public class PostgresDataManager implements DataManager {
                         properties.getSrc_lang_code(), properties.getDest_lang_code()));
                 List<String> translations = new ArrayList<>();
                 while (resultSet.next()) {
-                    translations.add(resultSet.getString(TRANSLATION.columnName));
+                    translations.add(resultSet.getString(1));
                 }
                 return translations;
             }
@@ -111,12 +116,12 @@ public class PostgresDataManager implements DataManager {
                 String key;
                 List<String> values;
                 while (resultSet.next()) {
-                    key = resultSet.getString(ORIGIN_WORD.columnName);
+                    key = resultSet.getString(1);
                     if (wordWithTranslations.containsKey(key)) {
-                        wordWithTranslations.get(key).add(resultSet.getString(TRANSLATION.columnName));
+                        wordWithTranslations.get(key).add(resultSet.getString(2));
                     } else {
                         values = new ArrayList<>();
-                        values.add(resultSet.getString(TRANSLATION.columnName));
+                        values.add(resultSet.getString(2));
                         wordWithTranslations.put(key, values);
                     }
                 }
