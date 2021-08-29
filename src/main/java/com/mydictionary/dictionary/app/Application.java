@@ -33,6 +33,7 @@ public class Application {
             properties.setUser_id(USER_ID);
             properties.setSrc_lang_code("en");
             properties.setDest_lang_code("ru");
+            /*
             do {
                 System.out.println("Введите слово для перевода:");
                 strToTranslate = keyboard.readLine();
@@ -66,9 +67,15 @@ public class Application {
                 System.out.println("Хотите продолжить?(1\\0)");
                 answer = keyboard.readLine();
             } while (!answer.equals("0") && !answer.equalsIgnoreCase("n"));
+             */
 
-        } catch (IOException ex) {
-            System.out.println("Something gone wrong with IO");
+            properties.setOrigin_word("dog");
+            translations = new ArrayList<>();
+            translations.add("собака");
+            dataManager.deleteTranslations(properties, translations);
+            //System.out.println(translations);
+        } catch (Exception ex) {
+            System.out.println("Something gone wrong");
             ex.printStackTrace();
             System.exit(-1);
         }

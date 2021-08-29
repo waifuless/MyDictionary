@@ -38,12 +38,18 @@ public class PostgresDataManager implements DataManager {
                     "INNER JOIN user_vocabulary ON user_vocabulary.translation_id = translation.translation_id " +
                     "WHERE user_id=%d AND origin_word.language='%s' AND translation_word.language='%s'";
     private final static String DELETE_WORD_TRANSLATIONS_QUERY =
-            "DELETE FROM user_vocabulary " +
-                    "INNER JOIN dictionary AS origin_word ON translation.origin_word_id = origin_word.word_id " +
-                    "INNER JOIN dictionary AS translation_word ON translation.translation_variant_id = translation_word.word_id " +
-                    "INNER JOIN user_vocabulary ON user_vocabulary.translation_id = translation.translation_id " +
-                    "WHERE user_id=%d AND origin_word.word='%s' AND translation_word.word='%s' " +
-                    "AND origin_word.language='%s' AND translation_word.language='%s'";
+            "DELETE FROM user_vocabulary\n" +
+                    "USING translation,\n" +
+                    "dictionary AS origin_word,\n" +
+                    "dictionary AS translation_word\n" +
+                    "WHERE translation.translation_id = user_vocabulary.translation_id\n" +
+                    "AND origin_word.word_id = translation.origin_word_id\n" +
+                    "AND translation_word.word_id = translation.translation_variant_id\n" +
+                    "AND user_id = %d\n" +
+                    "AND origin_word.word = '%s'\n" +
+                    "AND translation_word.word = '%s'\n" +
+                    "AND origin_word.language = '%s'\n" +
+                    "AND translation_word.language = '%s';\n";
 
     private static PostgresDataManager instance;
 
