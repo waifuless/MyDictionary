@@ -5,12 +5,8 @@ import com.mydictionary.dictionary.model.PropertiesWithOriginWord;
 import com.mydictionary.dictionary.translation.Translator;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Alfa class for test the system. Should be deleted in complete application
