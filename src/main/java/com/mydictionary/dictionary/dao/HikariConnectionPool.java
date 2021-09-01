@@ -13,7 +13,7 @@ public class HikariConnectionPool implements ConnectionPool {
     private HikariDataSource dataSource;
 
     private HikariConnectionPool() {
-        instance.init();
+        init();
     }
 
     public static HikariConnectionPool getInstance() {
