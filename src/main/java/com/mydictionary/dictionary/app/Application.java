@@ -56,10 +56,10 @@ public class Application {
                     dataManager.save(properties, translationsToSave);
                 }
 
-                Map<String,List<String>> userWords = dataManager.readAllTranslationsByProperties(properties);
+                Map<String, List<String>> userWords = dataManager.readAllTranslationsByProperties(properties);
                 for (Map.Entry<String, List<String>> entry : userWords.entrySet()) {
-                    System.out.println(entry.getKey()+":");
-                    entry.getValue().forEach(str -> System.out.println("\t"+str));
+                    System.out.println(entry.getKey() + ":");
+                    entry.getValue().forEach(str -> System.out.println("\t" + str));
                 }
 
 

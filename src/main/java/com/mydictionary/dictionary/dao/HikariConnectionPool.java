@@ -8,17 +8,21 @@ import java.sql.SQLException;
 
 public class HikariConnectionPool implements ConnectionPool {
 
-    private static HikariConnectionPool instance;
+    private static volatile HikariConnectionPool instance;
 
     private HikariDataSource dataSource;
 
     private HikariConnectionPool() {
+        instance.init();
     }
 
-    public static synchronized HikariConnectionPool getInstance() {
+    public static HikariConnectionPool getInstance() {
         if (instance == null) {
-            instance = new HikariConnectionPool();
-            instance.init();
+            synchronized (HikariConnectionPool.class) {
+                if (instance == null) {
+                    instance = new HikariConnectionPool();
+                }
+            }
         }
         return instance;
     }
@@ -36,7 +40,7 @@ public class HikariConnectionPool implements ConnectionPool {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         synchronized (this) {
             dataSource.close();
             instance = null;

@@ -20,7 +20,7 @@ public class PostgresUserManager implements UserManager {
     private final static String DELETE_USER_BY_ID_QUERY =
             "DELETE FROM app_user WHERE user_id = %d";
 
-    private static PostgresUserManager instance;
+    private static volatile PostgresUserManager instance;
 
     private final ConnectionPool connectionPool;
 
@@ -28,9 +28,13 @@ public class PostgresUserManager implements UserManager {
         connectionPool = ConnectionPool.getInstance();
     }
 
-    public static synchronized PostgresUserManager getInstance() {
+    public static PostgresUserManager getInstance() {
         if (instance == null) {
-            instance = new PostgresUserManager();
+            synchronized (PostgresUserManager.class) {
+                if (instance == null) {
+                    instance = new PostgresUserManager();
+                }
+            }
         }
         return instance;
     }

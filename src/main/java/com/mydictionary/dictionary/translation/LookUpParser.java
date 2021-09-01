@@ -12,14 +12,18 @@ public class LookUpParser {
 
     private final static double MINIMAL_CONFIDENCE_VALUE = 0.1;
 
-    private static LookUpParser instance;
+    private static volatile LookUpParser instance;
 
     private LookUpParser() {
     }
 
     static LookUpParser getInstance() {
         if (instance == null) {
-            instance = new LookUpParser();
+            synchronized (LookUpParser.class) {
+                if (instance == null) {
+                    instance = new LookUpParser();
+                }
+            }
         }
         return instance;
     }

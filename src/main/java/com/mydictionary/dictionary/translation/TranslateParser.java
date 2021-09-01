@@ -8,14 +8,18 @@ import com.google.gson.JsonParser;
 
 public class TranslateParser {
 
-    private static TranslateParser instance;
+    private static volatile TranslateParser instance;
 
     private TranslateParser() {
     }
 
     static TranslateParser getInstance() {
         if (instance == null) {
-            instance = new TranslateParser();
+            synchronized (TranslateParser.class) {
+                if (instance == null) {
+                    instance = new TranslateParser();
+                }
+            }
         }
         return instance;
     }

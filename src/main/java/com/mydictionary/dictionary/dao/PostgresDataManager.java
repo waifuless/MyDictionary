@@ -65,7 +65,7 @@ public class PostgresDataManager implements DataManager {
                     "OR dictionary.word_id=translation_set.translation_word_id\n" +
                     "INNER JOIN user_vocabulary ON user_vocabulary.translation_id = translation_set.translation_id)";
 
-    private static PostgresDataManager instance;
+    private static volatile PostgresDataManager instance;
 
     private final ConnectionPool connectionPool;
 
@@ -73,9 +73,13 @@ public class PostgresDataManager implements DataManager {
         connectionPool = ConnectionPool.getInstance();
     }
 
-    public static synchronized PostgresDataManager getInstance() {
+    public static PostgresDataManager getInstance() {
         if (instance == null) {
-            instance = new PostgresDataManager();
+            synchronized (PostgresDataManager.class) {
+                if (instance == null) {
+                    instance = new PostgresDataManager();
+                }
+            }
         }
         return instance;
     }
