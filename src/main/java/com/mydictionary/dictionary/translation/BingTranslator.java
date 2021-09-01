@@ -4,7 +4,9 @@ import com.squareup.okhttp.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
+//todo: remake to smth like singleton to not recreate everything
 public class BingTranslator implements Translator {
 
     private final static String BING_SUBSCRIPTION_KEY = System.getenv("BING_SUBSCRIPTION_KEY");
@@ -34,7 +36,7 @@ public class BingTranslator implements Translator {
 
     @Override
     public List<String> translate(String textToTranslate) throws IOException {
-        String stripText = textToTranslate.strip();
+        String stripText = textToTranslate.strip().toLowerCase(Locale.ROOT);
         String translateResponse = postRequest(translateUrl, stripText);
         String lookupResponse = postRequest(lookupUrl, stripText);
         String mainTranslate = translateParser.parse(translateResponse);

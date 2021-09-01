@@ -3,14 +3,14 @@ package com.mydictionary.dictionary.model;
 public class User {
 
     private String email;
-    private String passw_hash;
+    private String passwordHash;
 
     public User() {
     }
 
-    public User(int user_id, String email, String passw_hash) {
+    public User(int user_id, String email, String passwordHash) {
         this.email = email;
-        this.passw_hash = passw_hash;
+        this.passwordHash = passwordHash;
     }
 
     public String getEmail() {
@@ -21,11 +21,11 @@ public class User {
         this.email = email;
     }
 
-    public String getPassw_hash() {
-        return passw_hash;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassw_hash(String passw_hash) {
-        this.passw_hash = passw_hash;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 }

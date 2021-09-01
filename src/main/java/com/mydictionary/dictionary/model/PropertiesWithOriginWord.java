@@ -3,25 +3,25 @@ package com.mydictionary.dictionary.model;
 import java.util.Locale;
 
 /**
- * Origin word should always be lowered case
+ * Origin word should always be lowered case and striped
  */
 public class PropertiesWithOriginWord extends BasicProperties {
 
-    private String origin_word;
+    private String originWord;
 
     public PropertiesWithOriginWord() {
     }
 
-    public PropertiesWithOriginWord(int user_id, String src_lang_code, String dest_lang_code, String origin_word) {
+    public PropertiesWithOriginWord(int user_id, String src_lang_code, String dest_lang_code, String originWord) {
         super(user_id, src_lang_code, dest_lang_code);
-        this.origin_word = origin_word.toLowerCase(Locale.ROOT);
+        this.originWord = originWord.toLowerCase(Locale.ROOT);
     }
 
-    public String getOrigin_word() {
-        return origin_word;
+    public String getOriginWord() {
+        return originWord;
     }
 
-    public void setOrigin_word(String origin_word) {
-        this.origin_word = origin_word.toLowerCase(Locale.ROOT);
+    public void setOriginWord(String originWord) {
+        this.originWord = originWord.strip().toLowerCase(Locale.ROOT);
     }
 }

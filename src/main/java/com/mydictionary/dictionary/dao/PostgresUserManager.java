@@ -9,10 +9,12 @@ import java.sql.Statement;
 
 public class PostgresUserManager implements UserManager {
 
+    private final static String USER_EXISTENCE_COLUMN = "user_existence";
+    private final static String USER_ID_COLUMN = "user_id";
     private final static String INSERT_USER_QUERY =
             "INSERT INTO app_user(email, passw_hash) VALUES('%s','%s')";
     private final static String IS_EXIST_USER_QUERY =
-            "SELECT EXISTS(SELECT 1 FROM app_user WHERE email='%s')";
+            "SELECT EXISTS(SELECT 1 FROM app_user WHERE email='%s') AS user_existence";
     private final static String FIND_INDEX_BY_EMAIL_AND_PASSW_HASH_QUERY =
             "SELECT user_id FROM app_user WHERE email='%s' AND passw_hash='%s'";
     private final static String DELETE_USER_BY_ID_QUERY =
@@ -38,7 +40,7 @@ public class PostgresUserManager implements UserManager {
         try (Connection connection = connectionPool.getConnection()) {
             try (Statement dataQuery = connection.createStatement()) {
                 dataQuery.execute(String.format(INSERT_USER_QUERY,
-                        user.getEmail(), user.getPassw_hash()));
+                        user.getEmail(), user.getPasswordHash()));
             }
         }
     }
@@ -50,7 +52,7 @@ public class PostgresUserManager implements UserManager {
                 dataQuery.execute(String.format(IS_EXIST_USER_QUERY, email));
                 ResultSet resultSet = dataQuery.getResultSet();
                 resultSet.first();
-                return resultSet.getBoolean(1);
+                return resultSet.getBoolean(USER_EXISTENCE_COLUMN);
             }
         }
     }
@@ -66,7 +68,7 @@ public class PostgresUserManager implements UserManager {
                 dataQuery.execute(String.format(FIND_INDEX_BY_EMAIL_AND_PASSW_HASH_QUERY, email, passw_hash));
                 ResultSet resultSet = dataQuery.getResultSet();
                 if (resultSet.first()) {
-                    return resultSet.getInt(1);
+                    return resultSet.getInt(USER_ID_COLUMN);
                 }
                 return -1;
             }

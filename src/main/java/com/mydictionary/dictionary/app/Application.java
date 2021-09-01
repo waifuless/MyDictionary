@@ -6,7 +6,10 @@ import com.mydictionary.dictionary.translation.Translator;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Alfa class for test the system. Should be deleted in complete application
@@ -26,10 +29,10 @@ public class Application {
             DataManager dataManager = DataManager.getInstance();
             PropertiesWithOriginWord properties = new PropertiesWithOriginWord();
             final int USER_ID = 2;
-            properties.setUser_id(USER_ID);
-            properties.setSrc_lang_code("en");
-            properties.setDest_lang_code("ru");
-            /*
+            properties.setUserId(USER_ID);
+            properties.setSrcLangCode("en");
+            properties.setDestLangCode("ru");
+
             do {
                 System.out.println("Введите слово для перевода:");
                 strToTranslate = keyboard.readLine();
@@ -49,7 +52,7 @@ public class Application {
                     for (Integer favoriteWordIndex : favoriteWordsIndexes) {
                         translationsToSave.add(translations.get(favoriteWordIndex - 1));
                     }
-                    properties.setOrigin_word(strToTranslate);
+                    properties.setOriginWord(strToTranslate);
                     dataManager.save(properties, translationsToSave);
                 }
 
@@ -63,7 +66,7 @@ public class Application {
                 System.out.println("Хотите продолжить?(1\\0)");
                 answer = keyboard.readLine();
             } while (!answer.equals("0") && !answer.equalsIgnoreCase("n"));
-             */
+
 
             /*
             properties.setOrigin_word("dog");
@@ -72,7 +75,7 @@ public class Application {
             dataManager.deleteTranslations(properties, translations);
 
              */
-            dataManager.deleteUnusedWords();
+            //dataManager.deleteUnusedWords();
             //System.out.println(translations);
         } catch (Exception ex) {
             System.out.println("Something gone wrong");

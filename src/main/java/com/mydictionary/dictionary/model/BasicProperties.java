@@ -6,40 +6,40 @@ package com.mydictionary.dictionary.model;
 //todo: DELETE
 public class BasicProperties {
 
-    protected int user_id;
-    protected String src_lang_code;
-    protected String dest_lang_code;
+    protected int userId;
+    protected String srcLangCode;
+    protected String destLangCode;
 
     public BasicProperties() {
     }
 
-    public BasicProperties(int user_id, String src_lang_code, String dest_lang_code) {
-        this.user_id = user_id;
-        this.src_lang_code = src_lang_code;
-        this.dest_lang_code = dest_lang_code;
+    public BasicProperties(int userId, String srcLangCode, String destLangCode) {
+        this.userId = userId;
+        this.srcLangCode = srcLangCode;
+        this.destLangCode = destLangCode;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public String getSrc_lang_code() {
-        return src_lang_code;
+    public String getSrcLangCode() {
+        return srcLangCode;
     }
 
-    public void setSrc_lang_code(String src_lang_code) {
-        this.src_lang_code = src_lang_code;
+    public void setSrcLangCode(String srcLangCode) {
+        this.srcLangCode = srcLangCode;
     }
 
-    public String getDest_lang_code() {
-        return dest_lang_code;
+    public String getDestLangCode() {
+        return destLangCode;
     }
 
-    public void setDest_lang_code(String dest_lang_code) {
-        this.dest_lang_code = dest_lang_code;
+    public void setDestLangCode(String destLangCode) {
+        this.destLangCode = destLangCode;
     }
 }
