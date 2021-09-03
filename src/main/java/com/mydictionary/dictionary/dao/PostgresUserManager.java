@@ -66,10 +66,10 @@ public class PostgresUserManager implements UserManager {
      * return -1 if user not found of password is not true.
      */
     @Override
-    public int findIndexByEmailAndPasswHash(String email, String passw_hash) throws SQLException {
+    public int findIndexByEmailAndPasswordHash(String email, String passwordHash) throws SQLException {
         try (Connection connection = connectionPool.getConnection()) {
             try (Statement dataQuery = connection.createStatement()) {
-                dataQuery.execute(String.format(FIND_INDEX_BY_EMAIL_AND_PASSW_HASH_QUERY, email, passw_hash));
+                dataQuery.execute(String.format(FIND_INDEX_BY_EMAIL_AND_PASSW_HASH_QUERY, email, passwordHash));
                 ResultSet resultSet = dataQuery.getResultSet();
                 if (resultSet.first()) {
                     return resultSet.getInt(USER_ID_COLUMN);

@@ -3,6 +3,8 @@ package com.mydictionary.dictionary.app;
 import com.mydictionary.dictionary.dao.DataManager;
 import com.mydictionary.dictionary.model.PropertiesWithOriginWord;
 import com.mydictionary.dictionary.translation.Translator;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,9 +19,11 @@ import java.util.Map;
 public class Application {
 
     private final static BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in));
+    private final static Logger LOG = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) throws Exception {
         try {
+            LOG.info("BLABLA");
             String strToTranslate;
             List<String> translations;
             Translator translator = Translator.create();
@@ -36,7 +40,7 @@ public class Application {
             do {
                 System.out.println("Введите слово для перевода:");
                 strToTranslate = keyboard.readLine();
-                translations = translator.translate(strToTranslate);
+                translations = translator.translate(strToTranslate, properties.getSrcLangCode(), properties.getDestLangCode());
                 System.out.println("Список возможных переводов:");
                 for (int i = 0; i < translations.size(); i++) {
                     System.out.printf("%d)%s\n", i + 1, translations.get(i));

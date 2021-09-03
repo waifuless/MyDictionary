@@ -6,37 +6,39 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-//todo: remake to smth like singleton to not recreate everything
 public class BingTranslator implements Translator {
 
     private final static String BING_SUBSCRIPTION_KEY = System.getenv("BING_SUBSCRIPTION_KEY");
     private final static String LOCATION = "westeurope";
 
+    private static volatile BingTranslator instance;
+
     private final LookUpParser lookUpParser;
     private final TranslateParser translateParser;
-    private final HttpUrl translateUrl;
-    private final HttpUrl lookupUrl;
     private final OkHttpClient client;
 
-    BingTranslator() {
+    private BingTranslator() {
         lookUpParser = LookUpParser.getInstance();
         translateParser = TranslateParser.getInstance();
         client = new OkHttpClient();
-        translateUrl = makeUrl(TranslateFunction.TRANSLATE, Language.ENGLISH, Language.RUSSIAN);
-        lookupUrl = makeUrl(TranslateFunction.LOOKUP, Language.ENGLISH, Language.RUSSIAN);
     }
 
-    BingTranslator(Language sourceLanguage, Language resultLanguage) {
-        lookUpParser = LookUpParser.getInstance();
-        translateParser = TranslateParser.getInstance();
-        client = new OkHttpClient();
-        translateUrl = makeUrl(TranslateFunction.TRANSLATE, sourceLanguage, resultLanguage);
-        lookupUrl = makeUrl(TranslateFunction.LOOKUP, sourceLanguage, resultLanguage);
+    public static BingTranslator getInstance(){
+        if(instance==null){
+            synchronized (BingTranslator.class){
+                if(instance==null){
+                    instance=new BingTranslator();
+                }
+            }
+        }
+        return instance;
     }
 
     @Override
-    public List<String> translate(String textToTranslate) throws IOException {
+    public List<String> translate(String textToTranslate, String srcLanguage, String destLanguage) throws IOException {
         String stripText = textToTranslate.strip().toLowerCase(Locale.ROOT);
+        HttpUrl translateUrl = makeUrl(TranslateFunction.TRANSLATE, srcLanguage, destLanguage);
+        HttpUrl lookupUrl = makeUrl(TranslateFunction.LOOKUP, srcLanguage, destLanguage);
         String translateResponse = postRequest(translateUrl, stripText);
         String lookupResponse = postRequest(lookupUrl, stripText);
         String mainTranslate = translateParser.parse(translateResponse);
@@ -60,14 +62,14 @@ public class BingTranslator implements Translator {
         return response.body().string();
     }
 
-    private HttpUrl makeUrl(TranslateFunction translateFunction, Language sourceLanguage, Language resultLanguage) {
+    private HttpUrl makeUrl(TranslateFunction translateFunction, String sourceLanguage, String resultLanguage) {
         return new HttpUrl.Builder()
                 .scheme("https")
                 .host("api.cognitive.microsofttranslator.com")
                 .addPathSegment(translateFunction.functionPath)
                 .addQueryParameter("api-version", "3.0")
-                .addQueryParameter("from", sourceLanguage.code)
-                .addQueryParameter("to", resultLanguage.code)
+                .addQueryParameter("from", sourceLanguage)
+                .addQueryParameter("to", resultLanguage)
                 .build();
     }
 

@@ -14,7 +14,7 @@ public interface UserManager {
 
     boolean isUserExist(String email) throws SQLException;
 
-    int findIndexByEmailAndPasswHash(String email, String passw_hash) throws SQLException;
+    int findIndexByEmailAndPasswordHash(String email, String passwordHash) throws SQLException;
 
     void deleteUser(int id) throws SQLException;
 }
