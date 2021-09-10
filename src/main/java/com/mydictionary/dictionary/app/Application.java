@@ -1,6 +1,7 @@
 package com.mydictionary.dictionary.app;
 
 import com.mydictionary.dictionary.dao.DataManager;
+import com.mydictionary.dictionary.dao.UserManager;
 import com.mydictionary.dictionary.model.PropertiesWithOriginWord;
 import com.mydictionary.dictionary.translation.Translator;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ public class Application {
             String answer;
             int[] favoriteWordsIndexes;
             List<String> translationsToSave;
+            UserManager userManager = UserManager.getInstance();
             DataManager dataManager = DataManager.getInstance();
             PropertiesWithOriginWord properties = new PropertiesWithOriginWord();
             final int USER_ID = 2;

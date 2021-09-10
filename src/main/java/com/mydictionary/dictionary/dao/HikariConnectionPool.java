@@ -30,6 +30,7 @@ public class HikariConnectionPool implements ConnectionPool {
     private void init() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:postgresql://localhost:5432/dictionary");
+        config.setDriverClassName("org.postgresql.Driver");
         config.setUsername("db_user");
         config.setPassword(System.getenv("DB_USER_PASSWORD"));
         dataSource = new HikariDataSource(config);

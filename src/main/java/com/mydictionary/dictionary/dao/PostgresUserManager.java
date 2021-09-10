@@ -64,7 +64,7 @@ public class PostgresUserManager implements UserManager {
             try (Statement dataQuery = connection.createStatement()) {
                 dataQuery.execute(String.format(IS_EXIST_USER_QUERY, email));
                 ResultSet resultSet = dataQuery.getResultSet();
-                resultSet.first();
+                resultSet.next();
                 return resultSet.getBoolean(USER_EXISTENCE_COLUMN);
             }
         }
@@ -76,7 +76,7 @@ public class PostgresUserManager implements UserManager {
             try (Statement dataQuery = connection.createStatement()) {
                 dataQuery.execute(String.format(FIND_USER_BY_EMAIL_QUERY, email));
                 ResultSet resultSet = dataQuery.getResultSet();
-                if (resultSet.first()) {
+                if (resultSet.next()) {
                     String passwordHash = resultSet.getString(PASSWORD_HASH_COLUMN);
                     if (encoder.matches(password, passwordHash)) {
                         return userFactory.createUserWithoutPassword(resultSet.getInt(USER_ID_COLUMN),
