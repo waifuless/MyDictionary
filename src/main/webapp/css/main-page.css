@@ -1,0 +1,84 @@
+body{
+    background-color: ghostwhite;
+    font-family: 'Comfortaa', cursive;
+}
+
+.nav{
+    background-color: yellowgreen;
+}
+
+.nav__button {
+    color: #fff; /* цвет текста */
+    text-decoration: none; /* убирать подчёркивание у ссылок */
+    user-select: none; /* убирать выделение текста */
+    background: yellowgreen; /* фон кнопки */
+    padding:  .7em 3.5em; /* отступ от текста */
+    outline: none; /* убирать контур в Mozilla */
+    width: 30%;
+    margin-right: -4px;
+}
+
+.nav__button--center{
+    width: 39.9%;
+}
+
+.nav__button:hover { background: rgb(232,95,76); } /* при наведении курсора мышки */
+.nav__button:active { background: rgb(152,15,0); } /* при нажатии */
+
+.div__-boxes-parent {
+    display: flex;
+    justify-content: space-between;
+}
+
+.div__width-box{
+    width: 33.3%;
+}
+
+.language-element{
+    margin: 30px;
+    text-align: center;
+}
+
+.div__language-box__select {
+}
+
+.div__language-box__button {
+    text-align: center;
+    margin: auto;
+}
+
+.toggle-button{
+    height: 40px;
+    width: 130px;
+    border-radius: 10px;
+    border-color: black;
+    background-color: aliceblue;
+}
+
+.toggle-language-box__button{
+
+}
+
+.div__textArea{
+    text-align: center;
+}
+
+.textArea{
+    margin: 10px;
+    height: 100px;
+    width: 85%;
+    resize: none;
+}
+
+.div__translate-button{
+    text-align: center;
+    margin-top: 3%;
+}
+
+.translate-button{
+    height: 60px;
+    width: 220px;
+    border-radius: 10px;
+    border-color: black;
+    background-color: aliceblue;
+}
