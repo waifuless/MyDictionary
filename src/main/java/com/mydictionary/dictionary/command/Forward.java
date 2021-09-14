@@ -5,10 +5,10 @@ import java.util.Map;
 public class Forward implements Command{
 
     @Override
-    public CommandResponse execute(Map<String, String[]> parameterMap) {
+    public CommandResponse execute(CommandRequest request) {
         //todo: make validation
         String path;
-        switch (parameterMap.get("to")[0]){
+        switch (request.getParameter("to")){
             case "registration":
                 path = "WEB-INF/jsp/registration.jsp";
                 break;
@@ -19,7 +19,9 @@ public class Forward implements Command{
                 path = "WEB-INF/jsp/restore_password.jsp";
                 break;
             default:
-                path = "WEB-INF/jsp/FuckedUpException?errorMessage=unknown_forward_location";
+                request.setAttribute("errorMessage", "unknown forward location");
+                path = "WEB-INF/jsp/FuckedUpException";
+                break;
         }
         return new CommandResponse(false, path);
     }

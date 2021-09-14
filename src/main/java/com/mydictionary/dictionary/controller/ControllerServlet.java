@@ -1,9 +1,6 @@
 package com.mydictionary.dictionary.controller;
 
-import com.mydictionary.dictionary.command.Command;
-import com.mydictionary.dictionary.command.CommandResponse;
-import com.mydictionary.dictionary.command.Forward;
-import com.mydictionary.dictionary.command.SignIn;
+import com.mydictionary.dictionary.command.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -36,8 +33,8 @@ public class ControllerServlet extends HttpServlet {
             case "forward":
                 command = new Forward();
                 break;
-            case "registration":
-                request.getRequestDispatcher("WEB-INF/jsp/registration.jsp").forward(request, response);
+            case "register":
+                command = new Register();
                 break;
             case "signIn":
                 command = new SignIn();
@@ -50,7 +47,7 @@ public class ControllerServlet extends HttpServlet {
                 sendExceptionPage(request, response);
                 break;
         }
-        CommandResponse commandResponse = command.execute(request.getParameterMap());
+        CommandResponse commandResponse = command.execute(new CommandRequest(request));
         if(commandResponse.isRedirect()){
             response.sendRedirect(commandResponse.getPath());
         }else{
@@ -60,6 +57,6 @@ public class ControllerServlet extends HttpServlet {
 
     private void sendExceptionPage(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
-        request.getRequestDispatcher("WEB-INF/jsp/FuckedUpException.jsp").forward(request, response);
+        request.getRequestDispatcher("WEB-INF/jsp/exception.jsp").forward(request, response);
     }
 }

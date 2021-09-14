@@ -11,7 +11,7 @@
     <h1>Registration</h1>
 </div>
 <div class="main-form">
-    <form action="${pageContext.request.contextPath}/RegisterServlet" method="post">
+    <form action="${pageContext.request.contextPath}/ControllerServlet?command=register" method="post">
         <p><label for="email">Email:</label>
             <input class="input__text" type="text" name="email" id="email" required/></p>
         <p><label for="password">Password:</label>

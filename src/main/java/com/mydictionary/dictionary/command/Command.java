@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface Command {
 
-    CommandResponse execute(Map<String, String[]> parameterMap);
+    CommandResponse execute(CommandRequest request);
 }
