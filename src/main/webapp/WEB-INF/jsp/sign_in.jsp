@@ -11,7 +11,7 @@
     <h1>Sign in</h1>
 </div>
 <div class="main-form">
-    <form action="${pageContext.request.contextPath}/SignInServlet" method="post">
+    <form action="${pageContext.request.contextPath}/ControllerServlet?command=signIn" method="post">
         <p><label for="email">Email:</label>
             <input class="input__text" type="text" name="email" id="email" required/></p>
         <p><label for="password">Password:</label>
@@ -20,8 +20,8 @@
     </form>
 </div>
 <div class="register-offer">
-    <p>First time? <a href="${pageContext.request.contextPath}/ToggleSignServlet?to=registration">Create an account.</a></p>
-    <p>Forgot password? <a href="${pageContext.request.contextPath}/restore_password.html">Click here.</a></p>
+    <p>First time? <a href="${pageContext.request.contextPath}/ControllerServlet?command=forward&to=registration">Create an account.</a></p>
+    <p>Forgot password? <a href="${pageContext.request.contextPath}/ControllerServlet?command=forward&to=restorePassword">Click here.</a></p>
 </div>
 </body>
 </html>

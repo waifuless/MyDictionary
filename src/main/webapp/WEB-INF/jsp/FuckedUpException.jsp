@@ -5,7 +5,7 @@
 </head>
 <body>
 <p>
-  ${requestScope.errorMessage}
+  Error: ${requestScope.errorMessage}
 </p>
 </body>
 </html>

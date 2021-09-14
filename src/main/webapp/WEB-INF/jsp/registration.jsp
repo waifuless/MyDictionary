@@ -22,7 +22,7 @@
     </form>
 </div>
 <div class="register-offer">
-    <p>Already have an account? <a href="${pageContext.request.contextPath}/ToggleSignServlet?to=sign_in">Sign in.</a></p>
+    <p>Already have an account? <a href="${pageContext.request.contextPath}/ControllerServlet?command=forward&to=signIn">Sign in.</a></p>
 </div>
 </body>
 </html>
