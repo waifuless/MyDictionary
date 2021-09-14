@@ -2,10 +2,9 @@ package com.mydictionary.dictionary.command;
 
 import com.mydictionary.dictionary.dao.UserManager;
 import com.mydictionary.dictionary.model.User;
+import jakarta.servlet.http.HttpSession;
 
-import java.util.Map;
-
-public class SignIn implements Command{
+public class SignIn implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
@@ -13,11 +12,18 @@ public class SignIn implements Command{
         String password = request.getParameter("password");
         UserManager userManager = UserManager.getInstance();
         try {
-            userManager.findUserByEmailAndPassword(email, password);
+            User user = userManager.findUserByEmailAndPassword(email, password);
+            SignInUser(user, request.createSession());
             return new CommandResponse(false, "WEB-INF/jsp/main.jsp");
         } catch (Exception ex) {
             request.setAttribute("errorMessage", ex.getMessage());
             return new CommandResponse(false, "WEB-INF/jsp/exception.jsp");
         }
+    }
+
+    private void SignInUser(User user, HttpSession session){
+        session.setAttribute(UserSessionAttribute.USER_ID.name(), user.getUserId());
+        session.setAttribute(UserSessionAttribute.USER_EMAIL.name(), user.getEmail());
+        session.setAttribute(UserSessionAttribute.USER_ROLE.name(), user.getRole());
     }
 }

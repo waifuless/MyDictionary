@@ -2,12 +2,12 @@ package com.mydictionary.dictionary.model;
 
 public class User {
 
-    private final static String DEFAULT_ROLE = "user";
+    private final static Role DEFAULT_ROLE = Role.USER;
 
     private int userId;
     private String email;
     private String passwordHash;
-    private String role;
+    private Role role;
 
     User(int userId, String email, String passwordHash) {
         this.userId = userId;
@@ -16,7 +16,7 @@ public class User {
         this.role = DEFAULT_ROLE;
     }
 
-    User(int userId, String email, String passwordHash, String role) {
+    User(int userId, String email, String passwordHash, Role role) {
         this.userId = userId;
         this.email = email;
         this.passwordHash = passwordHash;
@@ -39,11 +39,11 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

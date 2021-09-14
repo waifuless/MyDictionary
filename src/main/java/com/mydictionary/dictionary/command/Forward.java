@@ -1,14 +1,12 @@
 package com.mydictionary.dictionary.command;
 
-import java.util.Map;
-
-public class Forward implements Command{
+public class Forward implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {
         //todo: make validation
         String path;
-        switch (request.getParameter("to")){
+        switch (request.getParameter("to")) {
             case "registration":
                 path = "WEB-INF/jsp/registration.jsp";
                 break;

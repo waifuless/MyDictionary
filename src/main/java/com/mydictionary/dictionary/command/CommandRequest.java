@@ -36,4 +36,8 @@ public class CommandRequest {
     public Object getAttribute(String name) {
         return request.getAttribute(name);
     }
+
+    public String getContextPath() {
+        return request.getContextPath();
+    }
 }

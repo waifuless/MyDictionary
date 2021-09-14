@@ -8,18 +8,14 @@ body{
 }
 
 .nav__button {
-    color: #fff; /* цвет текста */
-    text-decoration: none; /* убирать подчёркивание у ссылок */
-    user-select: none; /* убирать выделение текста */
-    background: yellowgreen; /* фон кнопки */
-    padding:  .7em 3.5em; /* отступ от текста */
-    outline: none; /* убирать контур в Mozilla */
-    width: 30%;
-    margin-right: -4px;
+    display: inline-block;
+    width: 50px;
+    <!--margin-right: -4px;-->
 }
 
 .nav__button--center{
-    width: 39.9%;
+    display: inline-block;
+    width: 50px;
 }
 
 .nav__button:hover { background: rgb(232,95,76); } /* при наведении курсора мышки */

@@ -1,12 +1,16 @@
 package com.mydictionary.dictionary.controller;
 
 import com.mydictionary.dictionary.command.*;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import com.mydictionary.dictionary.exception.InvalidArgumentException;
+import com.mydictionary.dictionary.exception.OperationNotSupportedException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.Optional;
 
 @WebServlet(name = "ControllerServlet", value = "/ControllerServlet")
 public class ControllerServlet extends HttpServlet {
@@ -22,41 +26,39 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private void process(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
-        String requestedCommand = request.getParameter("command");
-        if(requestedCommand==null){
-            request.setAttribute("errorMessage", "command does not exist");
-            sendExceptionPage(request, response);
-        }
-        Command command = null;
-        switch (requestedCommand){
-            case "forward":
-                command = new Forward();
-                break;
-            case "register":
-                command = new Register();
-                break;
-            case "signIn":
-                command = new SignIn();
-                break;
-            case "restorePassword":
-                request.getRequestDispatcher("WEB-INF/jsp/registration.jsp").forward(request, response);
-                break;
-            default:
-                request.setAttribute("errorMessage", "requested command unknown");
-                sendExceptionPage(request, response);
-                break;
-        }
-        CommandResponse commandResponse = command.execute(new CommandRequest(request));
-        if(commandResponse.isRedirect()){
-            response.sendRedirect(commandResponse.getPath());
-        }else{
-            request.getRequestDispatcher(commandResponse.getPath()).forward(request, response);
+            throws ServletException, IOException {
+        try {
+            String requestedCommand = request.getParameter("command");
+            if (requestedCommand == null) {
+                throw new InvalidArgumentException("command does not exist");
+            }
+            Command command = findCommandByName(requestedCommand);
+            CommandResponse commandResponse = command.execute(new CommandRequest(request));
+            if (commandResponse.isRedirect()) {
+                response.sendRedirect(commandResponse.getPath());
+            } else {
+                request.getRequestDispatcher(commandResponse.getPath()).forward(request, response);
+            }
+        } catch (Exception ex) {
+            request.setAttribute("errorMessage", ex.getMessage());
+            request.getRequestDispatcher("WEB-INF/jsp/exception.jsp").forward(request, response);
         }
     }
 
-    private void sendExceptionPage(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
-        request.getRequestDispatcher("WEB-INF/jsp/exception.jsp").forward(request, response);
+    private Command findCommandByName(String name) {
+        switch (name) {
+            case "forward":
+                return new Forward();
+            case "register":
+                return new Register();
+            case "signIn":
+                return new SignIn();
+            case "signOut":
+                return new SignOut();
+            case "restorePassword":
+                throw new OperationNotSupportedException("This function isn`t written yet");
+            default:
+                throw new InvalidArgumentException("requested command unknown");
+        }
     }
 }

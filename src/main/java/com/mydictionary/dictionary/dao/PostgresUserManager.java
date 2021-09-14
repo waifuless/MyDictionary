@@ -1,6 +1,7 @@
 package com.mydictionary.dictionary.dao;
 
 import com.mydictionary.dictionary.exception.UserNotFoundException;
+import com.mydictionary.dictionary.model.Role;
 import com.mydictionary.dictionary.model.User;
 import com.mydictionary.dictionary.model.UserFactory;
 import com.mydictionary.dictionary.security.PasswordEncoder;
@@ -80,7 +81,7 @@ public class PostgresUserManager implements UserManager {
                     String passwordHash = resultSet.getString(PASSWORD_HASH_COLUMN);
                     if (encoder.matches(password, passwordHash)) {
                         return userFactory.createUserWithoutPassword(resultSet.getInt(USER_ID_COLUMN),
-                                email, resultSet.getString(ROLE_COLUMN));
+                                email, Role.valueOf(resultSet.getString(ROLE_COLUMN)));
                     }
                 }
             }

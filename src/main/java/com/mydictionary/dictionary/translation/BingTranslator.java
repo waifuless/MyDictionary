@@ -23,11 +23,11 @@ public class BingTranslator implements Translator {
         client = new OkHttpClient();
     }
 
-    public static BingTranslator getInstance(){
-        if(instance==null){
-            synchronized (BingTranslator.class){
-                if(instance==null){
-                    instance=new BingTranslator();
+    public static BingTranslator getInstance() {
+        if (instance == null) {
+            synchronized (BingTranslator.class) {
+                if (instance == null) {
+                    instance = new BingTranslator();
                 }
             }
         }

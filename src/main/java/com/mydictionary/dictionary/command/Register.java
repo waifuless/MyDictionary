@@ -3,8 +3,6 @@ package com.mydictionary.dictionary.command;
 import com.mydictionary.dictionary.dao.UserManager;
 import com.mydictionary.dictionary.model.UserFactory;
 
-import java.util.Map;
-
 public class Register implements Command {
 
     @Override
