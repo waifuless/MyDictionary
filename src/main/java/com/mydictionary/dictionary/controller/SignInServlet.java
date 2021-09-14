@@ -26,10 +26,10 @@ public class SignInServlet extends HttpServlet {
             request.setAttribute("email", user.getEmail());
             request.setAttribute("userId", user.getUserId());
             request.setAttribute("role", user.getRole());
-            request.getRequestDispatcher("/jsp/main.jsp").forward(request, response);
+            request.getRequestDispatcher("WEB-INF/jsp/main.jsp").forward(request, response);
         }catch (Exception ex){
             request.setAttribute("errorMessage", ex.getMessage());
-            request.getRequestDispatcher("/jsp/FuckedUpException.jsp").forward(request, response);
+            request.getRequestDispatcher("open/FuckedUpException.jsp").forward(request, response);
         }
     }
 }

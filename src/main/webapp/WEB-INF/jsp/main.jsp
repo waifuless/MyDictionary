@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>MyDictionary</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main-page.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/normalize.css">
+    <link rel="stylesheet" href="css/main-page.css">
+    <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
 </head>
 <body>

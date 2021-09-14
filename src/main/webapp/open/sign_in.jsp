@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Sing in to MyDictionary</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/sing-in.css">
+    <link rel="stylesheet" href="css/sing-in.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
 </head>
 <body>
@@ -20,7 +20,7 @@
     </form>
 </div>
 <div class="register-offer">
-    <p>First time? <a href="${pageContext.request.contextPath}/jsp/registration.jsp">Create an account.</a></p>
+    <p>First time? <a href="${pageContext.request.contextPath}/ToggleSignServlet?to=registration">Create an account.</a></p>
     <p>Forgot password? <a href="${pageContext.request.contextPath}/restore_password.html">Click here.</a></p>
 </div>
 </body>

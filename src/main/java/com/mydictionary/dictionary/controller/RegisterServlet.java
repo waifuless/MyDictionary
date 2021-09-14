@@ -27,15 +27,15 @@ public class RegisterServlet extends HttpServlet {
         try {
             if(userManager.isUserExist(email)|| !password.equals(passwordRepeat)){
                 request.setAttribute("errorMessage", "User already exists or passwords not match");
-                request.getRequestDispatcher("/jsp/FuckedUpException.jsp").forward(request, response);
+                request.getRequestDispatcher("open/FuckedUpException.jsp").forward(request, response);
             }
             User user = UserFactory.getInstance().createUser(-1, email, password);
             userManager.save(user);
             System.out.println(request.getContextPath());
-            response.sendRedirect(request.getContextPath()+"/jsp/sign_in.jsp");
+            request.getRequestDispatcher("open/sign_in.jsp").forward(request, response);
         } catch (Exception ex){
             request.setAttribute("errorMessage", ex.getMessage());
-            request.getRequestDispatcher("/jsp/FuckedUpException.jsp").forward(request, response);
+            request.getRequestDispatcher("open/FuckedUpException.jsp").forward(request, response);
         }
     }
 }
