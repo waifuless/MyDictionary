@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface Translator {
 
-    static Translator create() {
+    static Translator getInstance() {
         return BingTranslator.getInstance();
     }
 

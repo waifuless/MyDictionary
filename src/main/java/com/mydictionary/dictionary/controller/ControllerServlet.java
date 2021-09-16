@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @WebServlet(name = "ControllerServlet", value = "/ControllerServlet")
 public class ControllerServlet extends HttpServlet {
@@ -57,6 +56,10 @@ public class ControllerServlet extends HttpServlet {
                 return new SignOut();
             case "restorePassword":
                 throw new OperationNotSupportedException("This function isn`t written yet");
+            case "translate":
+                return new Translate();
+            case "sendTranslations":
+                return new SendTranslations();
             default:
                 throw new InvalidArgumentException("requested command unknown");
         }
