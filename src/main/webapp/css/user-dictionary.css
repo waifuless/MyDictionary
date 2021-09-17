@@ -1,0 +1,15 @@
+.div__received-button{
+    text-align: center;
+    margin: auto;
+    padding: 10px;
+}
+
+.receive-button{
+    height: 50px;
+    width: 250px;
+    border-radius: 10px;
+    border: 3px solid gold;
+    color: gold;
+    font-size: 16px;
+    background-color: #B40017;
+}

@@ -6,52 +6,16 @@
     <title>MyDictionary</title>
     <script src="js/jquery-3.6.0.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/languagesSelection.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main-page.css">
 </head>
 <body>
-<header class="general-header">
-    <div>
-        <div class="header__item-wrapper">
-            <a class="header__item" href="">My dictionary</a>
-        </div>
-        <div class="header__item-wrapper">
-            <a class="header__item" href="#">Main page</a>
-        </div>
-        <div class="header__item-wrapper">
-            <a class="header__item"
-               href="${pageContext.request.contextPath}/ControllerServlet?command=signOut">Sign out</a>
-        </div>
-    </div>
-    <div class="clr"></div>
-</header>
 
-<div class="div__boxes-parent">
-    <div class="div__width-box div__language-box__select">
-        <p class="language-element">
-            <label for="originLanguageSelect">From</label><br/>
-            <select size="1" id="originLanguageSelect" name="originLanguage">
-                <option disabled>Choose language</option>
-                <option>ru</option>
-                <option>en</option>
-            </select>
-        </p>
-    </div>
-    <div class="div__width-box div__language-box__button">
-        <button class="language-element toggle-button">Toggle</button>
-    </div>
-    <div class="div__width-box div__language-box__select">
-        <p class="language-element">
-            <label for="destinationLanguageSelect">To</label><br/>
-            <select size="1" id="destinationLanguageSelect" name="translateLanguage">
-                <option disabled>Choose language</option>
-                <option>en</option>
-                <option>ru</option>
-            </select>
-        </p>
-    </div>
-</div>
+<jsp:include page="header.jsp"/>
+
+<jsp:include page="languagesSelection.jsp"/>
 
 <div class="div__boxes-parent">
     <div class="div__width-box div__textArea">

@@ -19,6 +19,12 @@ public class Forward implements Command {
             case "restorePassword":
                 path = "WEB-INF/jsp/restore_password.jsp";
                 break;
+            case "userDictionary":
+                path = "WEB-INF/jsp/user_dictionary.jsp";
+                break;
+            case "main":
+                path = "WEB-INF/jsp/main.jsp";
+                break;
             default:
                 request.setAttribute("errorMessage", "unknown forward location");
                 path = "WEB-INF/jsp/FuckedUpException";

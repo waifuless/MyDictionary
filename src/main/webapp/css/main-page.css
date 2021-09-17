@@ -78,7 +78,6 @@ body{
     height: 40px;
     width: 130px;
     border-radius: 10px;
-    border-color: black;
     color: ghostwhite;
     background-color: #B40017;
 }
@@ -137,7 +136,6 @@ body{
     height: 30px;
     width: 45%;
     border-radius: 10px;
-    border-color: black;
     color: ghostwhite;
     background-color: #B40017;
 }
@@ -152,7 +150,6 @@ body{
     width: 220px;
     border-radius: 10px;
     color: ghostwhite;
-    border-color: black;
     background-color: #B40017;
 }
 
@@ -196,4 +193,5 @@ body{
     border-radius: 10px;
     cursor:pointer;
 }
+
 .close__modal-window:hover {background: yellow;}
