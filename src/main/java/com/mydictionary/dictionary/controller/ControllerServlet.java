@@ -48,6 +48,8 @@ public class ControllerServlet extends HttpServlet {
 
     private Command findCommandByName(String name) {
         switch (name) {
+            case "autoSignIn":
+                return new AutoSignIn();
             case "forward":
                 return new Forward();
             case "register":

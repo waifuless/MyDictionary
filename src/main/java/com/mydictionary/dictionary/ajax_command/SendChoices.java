@@ -26,20 +26,24 @@ public class SendChoices implements AjaxCommand {
                 request.getSession().getAttribute(UserSessionAttribute.LAST_TRANSLATE_PROPERTIES.name());
         List<String> userSavedTranslations = dataManager.readWordTranslations(properties);
 
-        List<String> arrChecked = Arrays.asList(request.getParameterValues("arrChecked[]"));
-        List<String> arrUnchecked = Arrays.asList(request.getParameterValues("arrUnchecked[]"));
-
-        List<String> listToDelete = findTranslationsToDelete(userSavedTranslations, arrUnchecked);
-        List<String> listToSave = findTranslationsToSave(userSavedTranslations, arrChecked);
-
-        LOG.info("list to save: {}", listToSave);
-        LOG.info("list to delete: {}", listToDelete);
-
-        if (!listToDelete.isEmpty()) {
-            dataManager.deleteTranslations(properties, listToDelete);
+        String[] arrUnchecked = request.getParameterValues("arrUnchecked[]");
+        if (arrUnchecked != null) {
+            List<String> listUnchecked = Arrays.asList(arrUnchecked);
+            List<String> listToDelete = findTranslationsToDelete(userSavedTranslations, listUnchecked);
+            LOG.info("list to delete: {}", listToDelete);
+            if (!listToDelete.isEmpty()) {
+                dataManager.deleteTranslations(properties, listToDelete);
+            }
         }
-        if (!listToSave.isEmpty()) {
-            dataManager.save(properties, listToSave);
+
+        String[] arrChecked = request.getParameterValues("arrChecked[]");
+        if (arrChecked != null) {
+            List<String> listChecked = Arrays.asList(arrChecked);
+            List<String> listToSave = findTranslationsToSave(userSavedTranslations, listChecked);
+            LOG.info("list to save: {}", listToSave);
+            if (!listToSave.isEmpty()) {
+                dataManager.save(properties, listToSave);
+            }
         }
         String jsonAnswer = new Gson().toJson("Your choices have saved");
         return new AjaxCommandResponse("application/json", jsonAnswer);

@@ -4,6 +4,6 @@
     <title>Title</title>
 </head>
 <body>
-    <jsp:forward page="WEB-INF/jsp/sign_in.jsp"/>
+    <jsp:forward page="ControllerServlet?command=autoSignIn"/>
 </body>
 </html>
