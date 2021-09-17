@@ -1,4 +1,4 @@
-package com.mydictionary.dictionary.command;
+package com.mydictionary.dictionary.command_model;
 
 public enum UserSessionAttribute {
     USER_ID,

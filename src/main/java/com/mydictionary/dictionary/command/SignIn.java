@@ -1,5 +1,8 @@
 package com.mydictionary.dictionary.command;
 
+import com.mydictionary.dictionary.command_model.CommandRequest;
+import com.mydictionary.dictionary.command_model.CommandResponse;
+import com.mydictionary.dictionary.command_model.UserSessionAttribute;
 import com.mydictionary.dictionary.dao.UserManager;
 import com.mydictionary.dictionary.model.User;
 import jakarta.servlet.http.HttpSession;

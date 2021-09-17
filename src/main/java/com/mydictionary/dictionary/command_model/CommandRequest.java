@@ -1,4 +1,4 @@
-package com.mydictionary.dictionary.command;
+package com.mydictionary.dictionary.command_model;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

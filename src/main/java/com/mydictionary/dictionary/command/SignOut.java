@@ -1,10 +1,10 @@
 package com.mydictionary.dictionary.command;
 
-import com.mydictionary.dictionary.dao.UserManager;
-import com.mydictionary.dictionary.model.User;
+import com.mydictionary.dictionary.command_model.CommandRequest;
+import com.mydictionary.dictionary.command_model.CommandResponse;
 import jakarta.servlet.http.HttpSession;
 
-public class SignOut implements Command{
+public class SignOut implements Command {
 
     @Override
     public CommandResponse execute(CommandRequest request) {

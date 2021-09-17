@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>MyDictionary</title>
+    <script src="js/jquery-3.6.0.js"></script>
+    <script src="js/main.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main-page.css">
@@ -28,7 +30,7 @@
     <div class="div__width-box div__language-box__select">
         <p class="language-element">
             <label for="originLanguageSelect">From</label><br/>
-            <select size="1" id="originLanguageSelect" name="originLanguage" form="translateForm">
+            <select size="1" id="originLanguageSelect" name="originLanguage">
                 <option disabled>Choose language</option>
                 <option>ru</option>
                 <option>en</option>
@@ -41,7 +43,7 @@
     <div class="div__width-box div__language-box__select">
         <p class="language-element">
             <label for="destinationLanguageSelect">To</label><br/>
-            <select size="1" id="destinationLanguageSelect" name="translateLanguage" form="translateForm">
+            <select size="1" id="destinationLanguageSelect" name="translateLanguage">
                 <option disabled>Choose language</option>
                 <option>en</option>
                 <option>ru</option>
@@ -52,7 +54,7 @@
 
 <div class="div__boxes-parent">
     <div class="div__width-box div__textArea">
-        <textarea class="textArea" form="translateForm" placeholder="Print word to translate here" name="originWord"></textarea>
+        <textarea class="textArea" placeholder="Print word to translate here" name="originWord" id="originWord"></textarea>
     </div>
     <div class="div__width-box div__textArea">
         <!--div just to make space in center-->
@@ -65,27 +67,16 @@
         <a href="#div__modal-window"><img style="height: 100%; width: 100%;" src="images/banan.png"></a>
     </div>
     <div class="div__width-box div__textArea">
-        <form class="answers-list-form"
-              action="${pageContext.request.contextPath}/ControllerServlet?command=sendTranslations"
-              method="post" id="answers-form">
-        <ul class="answers-list">
-            <c:forEach items="${translationsWithStatus}" var="entry">
-                <li><input hidden type="checkbox" id="${entry.key}" name="userChoice[]" value="${entry.key}"
-                           <c:if test="${entry.value==true}">checked="checked"</c:if>>
-                    <label for="${entry.key}">${entry.key}</label>
-                </li>
-            </c:forEach>
+        <div class="answers-list-form" id="div-translation">
+        <ul class="answers-list" id="answers-list">
         </ul>
-        </form>
-        <button class="send-answers-button" type="submit" form="answers-form">send choices</button>
+        </div>
+        <button class="send-answers-button" type="submit" id="sendChoicesButton">send choices</button>
     </div>
 </div>
 
 <div class="div__translate-button">
-    <form id="translateForm" action="${pageContext.request.contextPath}/ControllerServlet?command=translate"
-          method="post">
-        <button class="translate-button">Translate</button>
-    </form>
+        <button id="translateButton" class="translate-button">Translate</button>
 </div>
 </body>
 </html>

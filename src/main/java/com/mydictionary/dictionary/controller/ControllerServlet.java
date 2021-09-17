@@ -1,6 +1,11 @@
 package com.mydictionary.dictionary.controller;
 
+import com.mydictionary.dictionary.ajax_command.SendChoices;
+import com.mydictionary.dictionary.ajax_command.Translate;
 import com.mydictionary.dictionary.command.*;
+import com.mydictionary.dictionary.command.Command;
+import com.mydictionary.dictionary.command_model.CommandRequest;
+import com.mydictionary.dictionary.command_model.CommandResponse;
 import com.mydictionary.dictionary.exception.InvalidArgumentException;
 import com.mydictionary.dictionary.exception.OperationNotSupportedException;
 import jakarta.servlet.ServletException;
@@ -56,10 +61,6 @@ public class ControllerServlet extends HttpServlet {
                 return new SignOut();
             case "restorePassword":
                 throw new OperationNotSupportedException("This function isn`t written yet");
-            case "translate":
-                return new Translate();
-            case "sendTranslations":
-                return new SendTranslations();
             default:
                 throw new InvalidArgumentException("requested command unknown");
         }
