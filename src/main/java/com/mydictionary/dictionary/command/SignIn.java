@@ -24,7 +24,7 @@ public class SignIn implements Command {
         }
     }
 
-    private void SignInUser(User user, HttpSession session){
+    private void SignInUser(User user, HttpSession session) {
         session.setAttribute(UserSessionAttribute.USER_ID.name(), user.getUserId());
         session.setAttribute(UserSessionAttribute.USER_EMAIL.name(), user.getEmail());
         session.setAttribute(UserSessionAttribute.USER_ROLE.name(), user.getRole());

@@ -19,9 +19,11 @@ $(document).ready(function(){
                 let i=0;
                 $.each(response, function(key, value){
                     if(value===false){
-                        answersList.append('<li><input hidden type="checkbox" name="translateCheckbox" id="'+i+'" value="'+key+'"> <label for="'+i+'">'+key+'</label></li>');
+                        answersList.append('<li><input hidden type="checkbox" name="translateCheckbox" id="'
+                            +i+'" value="'+key+'"> <label for="'+i+'">'+key+'</label></li>');
                     }else{
-                        answersList.append('<li><input hidden type="checkbox" name="translateCheckbox" id="'+i+'" value="'+key+'" checked> <label for="'+i+'">'+key+'</label></li>');
+                        answersList.append('<li><input hidden type="checkbox" name="translateCheckbox" id="'
+                            +i+'" value="'+key+'" checked> <label for="'+i+'">'+key+'</label></li>');
                     }
                     i++;
                 });
@@ -46,6 +48,8 @@ $(document).ready(function(){
         $('input[name="translateCheckbox"]:not(:checked)').each(function() {
             arrUnchecked.push((this.value));
         });
+
+        alert("ch: "+arrChecked.length+", unch: "+arrUnchecked.length);
 
         $.ajax({
             url: "AjaxControllerServlet",

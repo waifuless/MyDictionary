@@ -1,9 +1,6 @@
 package com.mydictionary.dictionary.controller;
 
-import com.mydictionary.dictionary.ajax_command.SendChoices;
-import com.mydictionary.dictionary.ajax_command.Translate;
 import com.mydictionary.dictionary.command.*;
-import com.mydictionary.dictionary.command.Command;
 import com.mydictionary.dictionary.command_model.CommandRequest;
 import com.mydictionary.dictionary.command_model.CommandResponse;
 import com.mydictionary.dictionary.exception.InvalidArgumentException;

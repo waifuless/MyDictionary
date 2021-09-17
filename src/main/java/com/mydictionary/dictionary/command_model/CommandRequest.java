@@ -25,6 +25,10 @@ public class CommandRequest {
         return request.getParameter(s);
     }
 
+    public String[] getParameterValues(String s) {
+        return request.getParameterValues(s);
+    }
+
     public Map<String, String[]> getParameterMap() {
         return request.getParameterMap();
     }

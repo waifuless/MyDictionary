@@ -10,7 +10,7 @@ public class SignOut implements Command {
     public CommandResponse execute(CommandRequest request) {
         try {
             HttpSession session = request.getSession();
-            if(!(session==null)){
+            if (!(session == null)) {
                 session.invalidate();
             }
             return new CommandResponse(true, "index.jsp");
