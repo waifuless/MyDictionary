@@ -25,11 +25,14 @@ public class SendChoices implements AjaxCommand {
         PropertiesWithOriginWord properties = (PropertiesWithOriginWord)
                 request.getSession().getAttribute(UserSessionAttribute.LAST_TRANSLATE_PROPERTIES.name());
         List<String> userSavedTranslations = dataManager.readWordTranslations(properties);
+        StringBuilder stringAnswer = new StringBuilder();
 
         String[] arrUnchecked = request.getParameterValues("arrUnchecked[]");
         if (arrUnchecked != null) {
             List<String> listUnchecked = Arrays.asList(arrUnchecked);
             List<String> listToDelete = findTranslationsToDelete(userSavedTranslations, listUnchecked);
+            stringAnswer.append("Deleted words: ");
+            addWordsToAnswer(stringAnswer, listToDelete);
             LOG.info("list to delete: {}", listToDelete);
             if (!listToDelete.isEmpty()) {
                 dataManager.deleteTranslations(properties, listToDelete);
@@ -40,12 +43,14 @@ public class SendChoices implements AjaxCommand {
         if (arrChecked != null) {
             List<String> listChecked = Arrays.asList(arrChecked);
             List<String> listToSave = findTranslationsToSave(userSavedTranslations, listChecked);
+            stringAnswer.append("\nSaved words: ");
+            addWordsToAnswer(stringAnswer, listToSave);
             LOG.info("list to save: {}", listToSave);
             if (!listToSave.isEmpty()) {
                 dataManager.save(properties, listToSave);
             }
         }
-        String jsonAnswer = new Gson().toJson("Your choices have saved");
+        String jsonAnswer = new Gson().toJson(stringAnswer);
         return new AjaxCommandResponse("application/json", jsonAnswer);
     }
 
@@ -77,5 +82,14 @@ public class SendChoices implements AjaxCommand {
             }
         }
         return listToSave;
+    }
+
+    private void addWordsToAnswer(StringBuilder stringAnswer, List<String> words){
+        if(words.isEmpty()){
+            stringAnswer.append("none;");
+        }
+        for (String word : words) {
+            stringAnswer.append(word).append("; ");
+        }
     }
 }

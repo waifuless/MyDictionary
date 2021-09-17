@@ -49,8 +49,6 @@ $(document).ready(function(){
             arrUnchecked.push((this.value));
         });
 
-        alert("ch: "+arrChecked.length+", unch: "+arrUnchecked.length);
-
         $.ajax({
             url: "AjaxControllerServlet",
             type: "POST",
