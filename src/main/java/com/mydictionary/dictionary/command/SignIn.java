@@ -16,7 +16,7 @@ public class SignIn implements Command {
         UserManager userManager = UserManager.getInstance();
         try {
             User user = userManager.findUserByEmailAndPassword(email, password);
-            SignInUser(user, request.createSession());
+            SignInUser(user, request);
             return new CommandResponse(false, "WEB-INF/jsp/main.jsp");
         } catch (Exception ex) {
             request.setAttribute("errorMessage", ex.getMessage());
@@ -24,7 +24,12 @@ public class SignIn implements Command {
         }
     }
 
-    private void SignInUser(User user, HttpSession session) {
+    private void SignInUser(User user, CommandRequest request) {
+        HttpSession session = request.getSession();
+        if(session!=null){
+            session.invalidate();
+        }
+        session = request.createSession();
         session.setAttribute(UserSessionAttribute.USER_ID.name(), user.getUserId());
         session.setAttribute(UserSessionAttribute.USER_EMAIL.name(), user.getEmail());
         session.setAttribute(UserSessionAttribute.USER_ROLE.name(), user.getRole());

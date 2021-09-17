@@ -5,6 +5,7 @@ import com.mydictionary.dictionary.command_model.CommandResponse;
 import com.mydictionary.dictionary.command_model.UserSessionAttribute;
 import com.mydictionary.dictionary.model.Role;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
 
 public class AutoSignIn implements Command {
 
