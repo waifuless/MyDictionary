@@ -84,8 +84,8 @@ public class SendChoices implements AjaxCommand {
         return listToSave;
     }
 
-    private void addWordsToAnswer(StringBuilder stringAnswer, List<String> words){
-        if(words.isEmpty()){
+    private void addWordsToAnswer(StringBuilder stringAnswer, List<String> words) {
+        if (words.isEmpty()) {
             stringAnswer.append("none;");
         }
         for (String word : words) {

@@ -26,7 +26,7 @@ public class SignIn implements Command {
 
     private void SignInUser(User user, CommandRequest request) {
         HttpSession session = request.getSession();
-        if(session!=null){
+        if (session != null) {
             session.invalidate();
         }
         session = request.createSession();
