@@ -10,7 +10,7 @@ import java.util.List;
 
 public class LookUpParser {
 
-    private final static double MINIMAL_CONFIDENCE_VALUE = 0.25;
+    private final static double MINIMAL_CONFIDENCE_VALUE = 0.11;
 
     private static volatile LookUpParser instance;
 

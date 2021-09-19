@@ -1,6 +1,7 @@
 package com.mydictionary.dictionary.controller;
 
 import com.mydictionary.dictionary.ajax_command.AjaxCommand;
+import com.mydictionary.dictionary.ajax_command.ReceiveAllTranslationsByLanguages;
 import com.mydictionary.dictionary.ajax_command.SendChoices;
 import com.mydictionary.dictionary.ajax_command.Translate;
 import com.mydictionary.dictionary.command_model.AjaxCommandResponse;
@@ -57,6 +58,8 @@ public class AjaxControllerServlet extends HttpServlet {
                 return new Translate();
             case "sendChoices":
                 return new SendChoices();
+            case "receiveAllTranslationsByLanguage":
+                return new ReceiveAllTranslationsByLanguages();
             default:
                 throw new InvalidArgumentException("requested command unknown");
         }

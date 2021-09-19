@@ -26,7 +26,7 @@
         <div id="div__modal-window">
             <div id="modal-window">
                 <img src="images/giveBanan2.jpg"><br />
-                <a href="#" class="close__modal-window">Взять банан</a>
+                <a href="#" class="close__modal-window">Take the banana</a>
             </div>
         </div>
         <a href="#div__modal-window"><img style="height: 100%; width: 100%;" src="images/banan.png"></a>
