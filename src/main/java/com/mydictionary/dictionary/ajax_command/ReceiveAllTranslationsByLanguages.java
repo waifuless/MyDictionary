@@ -13,6 +13,7 @@ import java.util.Map;
 public class ReceiveAllTranslationsByLanguages implements AjaxCommand {
 
     private static volatile ReceiveAllTranslationsByLanguages instance;
+
     private final DataManager dataManager = DataManager.getInstance();
 
     private ReceiveAllTranslationsByLanguages() {

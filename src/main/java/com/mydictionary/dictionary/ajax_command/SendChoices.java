@@ -17,7 +17,9 @@ import java.util.List;
 public class SendChoices implements AjaxCommand {
 
     private final static Logger LOG = LogManager.getLogger(SendChoices.class);
+
     private static volatile SendChoices instance;
+
     private final DataManager dataManager = DataManager.getInstance();
 
     private SendChoices() {

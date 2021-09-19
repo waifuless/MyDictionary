@@ -19,6 +19,7 @@ public class Translate implements AjaxCommand {
     private final static Logger LOG = LogManager.getLogger(Translate.class);
 
     private static volatile Translate instance;
+
     private final Translator translator = Translator.getInstance();
     private final DataManager dataManager = DataManager.getInstance();
 
