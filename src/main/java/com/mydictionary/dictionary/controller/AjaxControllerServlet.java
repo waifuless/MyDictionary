@@ -47,6 +47,7 @@ public class AjaxControllerServlet extends HttpServlet {
                 writer.write(commandResponse.getResponse());
             }
         } catch (Exception ex) {
+            LOG.warn(ex.getMessage(), ex);
             request.setAttribute("errorMessage", ex.getMessage());
             request.getRequestDispatcher("WEB-INF/jsp/exception.jsp").forward(request, response);
         }
@@ -55,11 +56,11 @@ public class AjaxControllerServlet extends HttpServlet {
     private AjaxCommand findCommandByName(String name) {
         switch (name) {
             case "translate":
-                return new Translate();
+                return Translate.getInstance();
             case "sendChoices":
-                return new SendChoices();
+                return SendChoices.getInstance();
             case "receiveAllTranslationsByLanguage":
-                return new ReceiveAllTranslationsByLanguages();
+                return ReceiveAllTranslationsByLanguages.getInstance();
             default:
                 throw new InvalidArgumentException("requested command unknown");
         }

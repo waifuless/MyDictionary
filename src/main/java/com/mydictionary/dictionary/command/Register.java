@@ -7,6 +7,22 @@ import com.mydictionary.dictionary.model.UserFactory;
 
 public class Register implements Command {
 
+    private static volatile Register instance;
+
+    private Register() {
+    }
+
+    public static Register getInstance() {
+        if (instance == null) {
+            synchronized (Register.class) {
+                if (instance == null) {
+                    instance = new Register();
+                }
+            }
+        }
+        return instance;
+    }
+
     @Override
     public CommandResponse execute(CommandRequest request) {
         String email = request.getParameter("email");

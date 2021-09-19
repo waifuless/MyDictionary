@@ -5,6 +5,22 @@ import com.mydictionary.dictionary.command_model.CommandResponse;
 
 public class Forward implements Command {
 
+    private static volatile Forward instance;
+
+    private Forward() {
+    }
+
+    public static Forward getInstance() {
+        if (instance == null) {
+            synchronized (Forward.class) {
+                if (instance == null) {
+                    instance = new Forward();
+                }
+            }
+        }
+        return instance;
+    }
+
     @Override
     public CommandResponse execute(CommandRequest request) {
         //todo: make validation

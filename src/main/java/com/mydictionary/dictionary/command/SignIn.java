@@ -9,6 +9,22 @@ import jakarta.servlet.http.HttpSession;
 
 public class SignIn implements Command {
 
+    private static volatile SignIn instance;
+
+    private SignIn() {
+    }
+
+    public static SignIn getInstance() {
+        if (instance == null) {
+            synchronized (SignIn.class) {
+                if (instance == null) {
+                    instance = new SignIn();
+                }
+            }
+        }
+        return instance;
+    }
+
     @Override
     public CommandResponse execute(CommandRequest request) {
         String email = request.getParameter("email");

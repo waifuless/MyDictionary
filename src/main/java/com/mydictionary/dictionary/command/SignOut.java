@@ -6,6 +6,22 @@ import jakarta.servlet.http.HttpSession;
 
 public class SignOut implements Command {
 
+    private static volatile SignOut instance;
+
+    private SignOut() {
+    }
+
+    public static SignOut getInstance() {
+        if (instance == null) {
+            synchronized (SignOut.class) {
+                if (instance == null) {
+                    instance = new SignOut();
+                }
+            }
+        }
+        return instance;
+    }
+
     @Override
     public CommandResponse execute(CommandRequest request) {
         try {

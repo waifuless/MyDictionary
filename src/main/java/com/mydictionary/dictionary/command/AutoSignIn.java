@@ -8,6 +8,22 @@ import jakarta.servlet.http.HttpSession;
 
 public class AutoSignIn implements Command {
 
+    private static volatile AutoSignIn instance;
+
+    private AutoSignIn() {
+    }
+
+    public static AutoSignIn getInstance() {
+        if (instance == null) {
+            synchronized (AutoSignIn.class) {
+                if (instance == null) {
+                    instance = new AutoSignIn();
+                }
+            }
+        }
+        return instance;
+    }
+
     @Override
     public CommandResponse execute(CommandRequest request) {
         try {

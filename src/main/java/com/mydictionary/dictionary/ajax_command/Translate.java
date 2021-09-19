@@ -18,8 +18,23 @@ public class Translate implements AjaxCommand {
 
     private final static Logger LOG = LogManager.getLogger(Translate.class);
 
+    private static volatile Translate instance;
     private final Translator translator = Translator.getInstance();
     private final DataManager dataManager = DataManager.getInstance();
+
+    private Translate() {
+    }
+
+    public static Translate getInstance() {
+        if (instance == null) {
+            synchronized (Translate.class) {
+                if (instance == null) {
+                    instance = new Translate();
+                }
+            }
+        }
+        return instance;
+    }
 
     @Override
     public AjaxCommandResponse execute(CommandRequest request) throws Exception {
