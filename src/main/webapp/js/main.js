@@ -3,6 +3,9 @@ $(document).ready(function(){
      * Translate button event
      */
     $("#translateButton").click(function(){
+
+        $(".div__loading").show();
+
         $.ajax({
             url: "AjaxControllerServlet",
             type: "POST",
@@ -27,6 +30,9 @@ $(document).ready(function(){
                     }
                     i++;
                 });
+            },
+            complete: function () {
+                $(".div__loading").hide();
             }
         });
     });

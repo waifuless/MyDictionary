@@ -195,3 +195,15 @@ body{
 }
 
 .close__modal-window:hover {background: yellow;}
+
+.div__loading{
+    width: 100px;
+    height: 100px;
+    display: none;
+    margin: 20px auto;
+}
+
+.loading-gif{
+    width: 100%;
+    height: 100%;
+}

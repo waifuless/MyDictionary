@@ -43,5 +43,10 @@
 <div class="div__translate-button">
         <button id="translateButton" class="translate-button">Translate</button>
 </div>
+
+<div class="div__loading">
+    <img class="loading-gif" src="images/loading2.gif">
+</div>
+
 </body>
 </html>
