@@ -48,8 +48,11 @@ public class AjaxControllerServlet extends HttpServlet {
             }
         } catch (Exception ex) {
             LOG.warn(ex.getMessage(), ex);
-            request.setAttribute("errorMessage", ex.getMessage());
-            request.getRequestDispatcher("WEB-INF/jsp/exception.jsp").forward(request, response);
+            response.setStatus(500);
+            try(PrintWriter writer = response.getWriter()) {
+                writer.print("An unexpected exception occurred on the server");
+                writer.flush();
+            }
         }
     }
 

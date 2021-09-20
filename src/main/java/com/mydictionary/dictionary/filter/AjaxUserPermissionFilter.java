@@ -30,13 +30,11 @@ public class AjaxUserPermissionFilter implements Filter {
         final Role userRole = (Role) request.getSession(false).getAttribute(UserSessionAttribute.USER_ROLE.name());
 
         if (userRole==null) {
-
             response.setStatus(401);
             try(PrintWriter writer = response.getWriter()) {
                 writer.print("You should be authorized to use this function");
                 writer.flush();
             }
-            //response.sendError(401, "You should be authorized to use this function");
             return;
         }
         chain.doFilter(request, response);
