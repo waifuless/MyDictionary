@@ -19,6 +19,9 @@
 
 <div class="div__received-button">
     <button class="receive-button" id="receiveTranslatesButton">Receive saved words</button>
+    <div class="div__loading">
+        <img class="loading-gif" src="images/loading2.gif">
+    </div>
 </div>
 
 <div class="div__saved-words-table">

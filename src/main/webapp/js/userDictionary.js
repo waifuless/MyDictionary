@@ -1,6 +1,17 @@
 $(document).ready(function(){
 
+    function handleAjaxError(xhr, textStatus, thrownError){
+        alert("Code error: "+xhr.status +"\nMessage: "+ xhr.responseText);
+        if(xhr.status===401){
+            window.location.href = 'ControllerServlet?command=forward&to=signIn';
+        }
+    }
+
     $("#receiveTranslatesButton").click(function (){
+
+        $(".div__loading").show();
+        $(".div__saved-words-table").hide();
+
         $.ajax({
             url: "AjaxControllerServlet",
             type: "POST",
@@ -20,8 +31,13 @@ $(document).ready(function(){
                     });
                      */
                     $('#savedWordsTable tr:last').after('<tr><td>'+key+'</td><td>'+translationsString+'</td></tr>');
+                    $(".div__saved-words-table").show();
                 });
-            }
+            },
+            complete: function () {
+                $(".div__loading").hide();
+            },
+            error: handleAjaxError
         });
     });
 });

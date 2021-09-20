@@ -19,6 +19,7 @@
     height: 50%;
     padding: 10px;
     margin: 20px auto;
+    display: none;
 }
 
 .saved-words-table{
