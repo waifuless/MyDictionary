@@ -1,4 +1,12 @@
 $(document).ready(function(){
+
+    function handleAjaxError(xhr, textStatus, thrownError){
+        alert("Code error: "+xhr.status +"\nMessage: "+ xhr.responseText);
+        if(xhr.status===401){
+            window.location.href = 'ControllerServlet?command=forward&to=signIn';
+        }
+    }
+
     /**
      * Translate button event
      */
@@ -33,7 +41,8 @@ $(document).ready(function(){
             },
             complete: function () {
                 $(".div__loading").hide();
-            }
+            },
+            error: handleAjaxError
         });
     });
 
@@ -41,10 +50,9 @@ $(document).ready(function(){
      * sendChoices button event
      */
     $("#sendChoicesButton").click(function(){
-        /*
-        try
-        let checkedValues = $("#answers-list li:input:checked");
-         */
+
+        $(".div__loading").show();
+
         let arrChecked = new Array(0);
         $('input[name="translateCheckbox"]:checked').each(function() {
             arrChecked.push((this.value));
@@ -66,7 +74,11 @@ $(document).ready(function(){
             },
             success: function(response) {
                 alert(response);
-            }
+            },
+            complete: function () {
+                $(".div__loading").hide();
+            },
+            error: handleAjaxError
         });
     });
 });

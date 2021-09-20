@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-@WebFilter(filterName = "UserPermissionFilter", urlPatterns = {"/ControllerServlet", "/AjaxControllerServlet"})
+@WebFilter(filterName = "UserPermissionFilter", urlPatterns = "/ControllerServlet")
 public class UserPermissionFilter implements Filter {
 
     private final static List<String> openForwardDirectories =
