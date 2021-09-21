@@ -25,11 +25,6 @@ $(document).ready(function(){
                 $("#savedWordsTable").find("tr:gt(0)").remove();
                 $.each(response, function(key, value){
                     let translationsString = value.join('; ');
-                    /*
-                    $.each(value, function (valueElem){
-                        translationsString+=(valueElem+'; ');
-                    });
-                     */
                     $('#savedWordsTable tr:last').after('<tr><td>'+key+'</td><td>'+translationsString+'</td></tr>');
                     $(".div__saved-words-table").show();
                 });

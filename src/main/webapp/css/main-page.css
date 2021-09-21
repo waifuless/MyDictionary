@@ -179,6 +179,17 @@ body{
     background: #fff;
 }
 
+#historyTextArea{
+    width: 90%;
+    height: 80%;
+    margin: 5%;
+    padding: 20px;
+    overflow: auto;
+    border-radius: 10px;
+    border: 1px solid black;
+    resize: none;
+}
+
 #div__modal-window:target {display: block;}
 
 .close__modal-window {

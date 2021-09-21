@@ -44,28 +44,30 @@ public class SendChoices implements AjaxCommand {
         StringBuilder stringAnswer = new StringBuilder();
 
         String[] arrUnchecked = request.getParameterValues("arrUnchecked[]");
+        stringAnswer.append("Deleted words: ");
+        List<String> listToDelete = null;
         if (arrUnchecked != null) {
             List<String> listUnchecked = Arrays.asList(arrUnchecked);
-            List<String> listToDelete = findTranslationsToDelete(userSavedTranslations, listUnchecked);
-            stringAnswer.append("Deleted words: ");
-            addWordsToAnswer(stringAnswer, listToDelete);
+            listToDelete = findTranslationsToDelete(userSavedTranslations, listUnchecked);
             LOG.info("list to delete: {}", listToDelete);
             if (!listToDelete.isEmpty()) {
                 dataManager.deleteTranslations(properties, listToDelete);
             }
         }
+        addWordsToAnswer(stringAnswer, listToDelete);
 
         String[] arrChecked = request.getParameterValues("arrChecked[]");
+        stringAnswer.append("\nSaved words: ");
+        List<String> listToSave = null;
         if (arrChecked != null) {
             List<String> listChecked = Arrays.asList(arrChecked);
-            List<String> listToSave = findTranslationsToSave(userSavedTranslations, listChecked);
-            stringAnswer.append("\nSaved words: ");
-            addWordsToAnswer(stringAnswer, listToSave);
+            listToSave = findTranslationsToSave(userSavedTranslations, listChecked);
             LOG.info("list to save: {}", listToSave);
             if (!listToSave.isEmpty()) {
                 dataManager.save(properties, listToSave);
             }
         }
+        addWordsToAnswer(stringAnswer, listToSave);
         String jsonAnswer = new Gson().toJson(stringAnswer);
         return new AjaxCommandResponse("application/json", jsonAnswer);
     }
@@ -101,8 +103,9 @@ public class SendChoices implements AjaxCommand {
     }
 
     private void addWordsToAnswer(StringBuilder stringAnswer, List<String> words) {
-        if (words.isEmpty()) {
+        if (words==null||words.isEmpty()) {
             stringAnswer.append("none;");
+            return;
         }
         for (String word : words) {
             stringAnswer.append(word).append("; ");

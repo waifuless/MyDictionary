@@ -74,6 +74,10 @@ $(document).ready(function(){
             },
             success: function(response) {
                 alert(response);
+                let historyTextArea = $("#historyTextArea");
+                let date = new Date();
+                let timeString = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+                historyTextArea.val(timeString+": "+response+'\n'+historyTextArea.val());
             },
             complete: function () {
                 $(".div__loading").hide();

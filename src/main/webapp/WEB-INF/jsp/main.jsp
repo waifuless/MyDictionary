@@ -25,8 +25,8 @@
         <!--div just to make space in center-->
         <div id="div__modal-window">
             <div id="modal-window">
-                <img src="images/giveBanan2.jpg"><br />
-                <a href="#" class="close__modal-window">Take the banana</a>
+                <textarea id="historyTextArea" readonly></textarea>
+                <a href="#" class="close__modal-window">Close history</a>
             </div>
         </div>
         <a href="#div__modal-window"><img style="height: 100%; width: 100%;" src="images/banan.png"></a>
