@@ -75,7 +75,9 @@ $(document).ready(function () {
     /**
      * Translate label event
      */
-    $(document).on('click touchstart', 'li.input-group', function () {
+    let count = 0;
+    $(document).on('click', 'li.input-group', function () {
+        console.log("Count: "+count++);
         let elemParent = $(this);
         let iElem = elemParent.children("i");
         let action;
