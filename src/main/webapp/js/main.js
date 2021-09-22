@@ -23,11 +23,8 @@ $(document).ready(function () {
      */
     $("#translateButton").click(function () {
 
-        //toggleLoading($(this));
-        //showLoading($(this));
         let button = $(this);
         showButtonLoading(button);
-        //$.blockUI();
         let answersList = $("#answers-list");
         answersList.empty();
 
@@ -44,14 +41,14 @@ $(document).ready(function () {
             success: function (response) {
                 $.each(response, function (key, value) {
                     if (value === false) {
-                        answersList.append('<li class="input-group">'
+                        answersList.append('<li class="input-group my-2">'
                             + '<i class="input-group-text free-translate-icon bi bi-dash"></i>'
                             + '<a class="form-control translate-label">'
                             + key
                             + '</a>'
                             + '</li>');
                     } else {
-                        answersList.append('<li class="input-group">'
+                        answersList.append('<li class="input-group my-2">'
                             + '<i class="input-group-text saved-translate-icon bi bi-suit-heart-fill"></i>'
                             + '<a class="form-control translate-label">'
                             + key
@@ -61,10 +58,7 @@ $(document).ready(function () {
                 });
             },
             complete: function () {
-                //toggleLoading($(this));
-                //hideLoading($(this));
                 showButtonReset(button);
-                //$.unblockUI();
             },
             error: handleAjaxError
         });
@@ -81,8 +75,8 @@ $(document).ready(function () {
     /**
      * Translate label event
      */
-    $(document).on('click touchstart', '.translate-label', function () {
-        let elemParent = $(this).parent();
+    $(document).on('click touchstart', 'li.input-group', function () {
+        let elemParent = $(this);
         let iElem = elemParent.children("i");
         let action;
         if(iElem.hasClass("free-translate-icon")){
