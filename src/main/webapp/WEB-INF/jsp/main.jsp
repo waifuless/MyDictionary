@@ -87,19 +87,12 @@
         <div class="col-md-5 my-2 col-12">
             <ul class="list-unstyled" id="answers-list" style="overflow: auto; min-height: 100px; max-height: 200px">
             </ul>
-            <button type="button" class="btn btn-primary mt-3" id="saveChangesButton">
-                <span class="spinner-border spinner-border-sm" role="status" hidden></span>
-                <span class="loading-text" hidden>Loading...</span>
-                <span class="regular-button-text">Save changes</span>
-            </button>
         </div>
     </div>
 
     <div class="row justify-content-center">
         <div class="col-3 text-center">
             <button class="btn btn-primary w-100" id="translateButton">
-                <span class="spinner-border spinner-border-sm" role="status" hidden></span>
-                <span class="loading-text" hidden>Loading...</span>
                 <span class="regular-button-text">Translate</span>
             </button>
         </div>

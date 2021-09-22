@@ -36,24 +36,19 @@ public class SaveChoices implements AjaxCommand {
 
     @Override
     public AjaxCommandResponse execute(CommandRequest request) throws Exception {
+
         PropertiesWithOriginWord properties = (PropertiesWithOriginWord)
                 request.getSession().getAttribute(UserSessionAttribute.LAST_TRANSLATE_PROPERTIES.name());
 
-        String[] arrToDelete = request.getParameterValues("arrToDelete[]");
-        if (arrToDelete != null) {
-            List<String> listToDelete = Arrays.asList(arrToDelete);
-            LOG.info("list to delete: {}", listToDelete);
-            if (!listToDelete.isEmpty()) {
-                dataManager.deleteTranslations(properties, listToDelete);
-            }
-        }
-
-        String[] arrToSave = request.getParameterValues("arrToSave[]");
-        if (arrToSave != null) {
-            List<String> listToSave = Arrays.asList(arrToSave);
-            LOG.info("list to save: {}", listToSave);
-            if (!listToSave.isEmpty()) {
-                dataManager.save(properties, listToSave);
+        String [] translations = request.getParameterValues("translations[]");
+        String action = request.getParameter("action");
+        if (translations != null && translations.length != 0 && action != null && !action.isEmpty()) {
+            List<String> listOfTranslations = Arrays.asList(translations);
+            LOG.info("action: {} ,list of translations: {}", action, listOfTranslations);
+            if (action.equals("save")) {
+                dataManager.save(properties, listOfTranslations);
+            } else {
+                dataManager.deleteTranslations(properties, listOfTranslations);
             }
         }
         String jsonAnswer = new Gson().toJson("Changes saved successfully");
