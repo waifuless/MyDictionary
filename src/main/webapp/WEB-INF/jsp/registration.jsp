@@ -36,7 +36,8 @@
     <div>
         <div>Already have an account? <a class="link-primary"
                                          href="${pageContext.request.contextPath}/ControllerServlet?command=forward&to=signIn">
-            Sign in.</a></div>
+            Sign in.</a>
+        </div>
     </div>
 </div>
 </body>

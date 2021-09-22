@@ -2,7 +2,7 @@ package com.mydictionary.dictionary.controller;
 
 import com.mydictionary.dictionary.ajax_command.AjaxCommand;
 import com.mydictionary.dictionary.ajax_command.ReceiveAllTranslationsByLanguages;
-import com.mydictionary.dictionary.ajax_command.SendChoices;
+import com.mydictionary.dictionary.ajax_command.SaveChoices;
 import com.mydictionary.dictionary.ajax_command.Translate;
 import com.mydictionary.dictionary.command_model.AjaxCommandResponse;
 import com.mydictionary.dictionary.command_model.CommandRequest;
@@ -60,8 +60,8 @@ public class AjaxControllerServlet extends HttpServlet {
         switch (name) {
             case "translate":
                 return Translate.getInstance();
-            case "sendChoices":
-                return SendChoices.getInstance();
+            case "saveChoices":
+                return SaveChoices.getInstance();
             case "receiveAllTranslationsByLanguage":
                 return ReceiveAllTranslationsByLanguages.getInstance();
             default:
