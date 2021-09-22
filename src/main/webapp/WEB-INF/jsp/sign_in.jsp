@@ -12,25 +12,30 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
 </head>
 <body>
-<div class="container text-center w-100">
-    <div class="mb-2">
+<div class="container-xl text-center w-100">
+    <div class="row mb-2">
         <h1>Sign in</h1>
     </div>
-    <div class="col-md-3 mx-auto my-3" style="max-width: 330px">
-        <form action="${pageContext.request.contextPath}/ControllerServlet?command=signIn" method="post">
-            <div class="form-floating my-2">
-                <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com">
-                <label for="floatingInput">Email address</label>
-            </div>
-            <div class="form-floating my-2">
-                <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password">
-                <label for="floatingPassword">Password</label>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Sign in</button>
-        </form>
+    <div class="row">
+        <div class="col-xl-4 col-md-6 col-9 mx-auto my-3">
+            <form action="${pageContext.request.contextPath}/ControllerServlet?command=signIn" method="post">
+                <div class="form-floating my-2">
+                    <input type="email" class="form-control" id="floatingInput" name="email"
+                           placeholder="name@example.com">
+                    <label for="floatingInput">Email address</label>
+                </div>
+                <div class="form-floating my-2">
+                    <input type="password" class="form-control" id="floatingPassword" name="password"
+                           placeholder="Password">
+                    <label for="floatingPassword">Password</label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Sign in</button>
+            </form>
+        </div>
     </div>
-    <div>
-        <div class="mb-1">First time? <a class="link-primary" href="${pageContext.request.contextPath}/ControllerServlet?command=forward&to=registration">Create
+    <div class="row">
+        <div class="mb-1">First time? <a class="link-primary"
+                                         href="${pageContext.request.contextPath}/ControllerServlet?command=forward&to=registration">Create
             an account.</a></div>
         <div>Forgot password? <a class="link-primary"
                                  href="${pageContext.request.contextPath}/ControllerServlet?command=forward&to=restorePassword">Click

@@ -6,7 +6,6 @@
     <script src="js/jquery-3.6.0.js"></script>
     <script src="js/main.js"></script>
     <script src="js/languagesSelection.js"></script>
-    <script src="js/jquery.blockUI.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
@@ -17,7 +16,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Comfortaa">
 </head>
 <body>
-<div class="container-md">
+<div class="container-xl">
 
     <header class="row">
         <nav class="nav nav-tabs text-center">
@@ -57,7 +56,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-2 col-auto text-center">
+        <div class="col-2 col-auto text-center">
             <button class="btn btn-primary" id="toggleButton">
                 <i class="bi bi-arrow-left-right"></i>
             </button>
@@ -76,15 +75,15 @@
 
     <div class="row my-5 text-center">
 
-        <div class="col-md-5 my-2 col-12">
+        <div class="col-xl-5 my-2 col-12">
             <textarea class="form-control w-100 h-100 mb-3" placeholder="Print word to translate here" name="originWord"
                       id="originWord"></textarea>
         </div>
 
-        <div class="col-md-2 col-auto">
+        <div class="col-xl-2 col-auto">
         </div>
 
-        <div class="col-md-5 my-2 col-12">
+        <div class="col-xl-5 my-2 col-12">
             <ul class="list-unstyled" id="answers-list" style="overflow: auto; min-height: 100px; max-height: 200px">
             </ul>
         </div>
