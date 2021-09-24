@@ -3,27 +3,15 @@ body{
     font-family: 'Comfortaa', cursive;
 }
 
-.prepare-to-save-translate{
-    background-color: yellowgreen;
-}
-
-.prepare-to-delete-translate{
-    background-color: #EB0600;
-}
-
 .saved-translate-icon{
-    background-color: whitesmoke;
     color: #EB0600;
 }
 
 .free-translate-icon{
-    background-color: whitesmoke;
 }
 
 .translate-label{
     text-decoration: none;
 }
-
-.loading-text{}
 
 .regular-button-text{}

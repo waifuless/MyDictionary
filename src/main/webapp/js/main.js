@@ -42,14 +42,18 @@ $(document).ready(function () {
                 $.each(response, function (key, value) {
                     if (value === false) {
                         answersList.append('<li class="input-group my-2">'
-                            + '<i class="input-group-text free-translate-icon bi bi-dash"></i>'
+                            + '<div class="input-group-text">'
+                            + '<i class="free-translate-icon bi bi-dash"></i>'
+                            + '</div>'
                             + '<a class="form-control translate-label">'
                             + key
                             + '</a>'
                             + '</li>');
                     } else {
                         answersList.append('<li class="input-group my-2">'
-                            + '<i class="input-group-text saved-translate-icon bi bi-suit-heart-fill"></i>'
+                            + '<div class="input-group-text">'
+                            + '<i class="saved-translate-icon bi bi-suit-heart-fill"></i>'
+                            + '</div>'
                             + '<a class="form-control translate-label">'
                             + key
                             + '</a>'
@@ -65,6 +69,7 @@ $(document).ready(function () {
     });
 
 
+    /* Method to toggle icon without loading icon
     function toggleIcon(iElem) {
         iElem.toggleClass("bi-dash");
         iElem.toggleClass("free-translate-icon");
@@ -72,28 +77,58 @@ $(document).ready(function () {
         iElem.toggleClass("saved-translate-icon");
     }
 
+     */
+
+
+    function showLoadInIcon(iElem){
+        iElem.removeClass("bi");
+        if(iElem.hasClass("free-translate-icon")){
+            iElem.removeClass("free-translate-icon");
+            iElem.removeClass("bi-dash");
+        }else{
+            iElem.removeClass("saved-translate-icon");
+            iElem.removeClass("bi-suit-heart-fill");
+        }
+        iElem.addClass("spinner-border");
+        iElem.addClass("spinner-border-sm");
+    }
+
+    function resetIconAfterLoad(iElem, madeAction){
+        iElem.removeClass("spinner-border");
+        iElem.removeClass("spinner-border-sm");
+        iElem.addClass("bi");
+        if(madeAction.localeCompare("save")===0){
+            iElem.addClass("saved-translate-icon");
+            iElem.addClass("bi-suit-heart-fill");
+        }else{
+            iElem.addClass("free-translate-icon");
+            iElem.addClass("bi-dash");
+        }
+    }
+
+
     /**
      * Translate label event
      */
-    let count = 0;
     $(document).on('click', 'li.input-group', function () {
-        console.log("Count: "+count++);
         let elemParent = $(this);
-        let iElem = elemParent.children("i");
+        let iElem = elemParent.children("div").children("i");
+        let translation = elemParent.children("a").text();
         let action;
-        if(iElem.hasClass("free-translate-icon")){
+        if (iElem.hasClass("free-translate-icon")) {
             action = "save";
-        }else {
+        } else {
             action = "delete";
         }
-        sendSaveChangesAjax(action, elemParent);
+        sendSaveChangesAjax(iElem, translation, action);
     });
 
-    function sendSaveChangesAjax(action, elemParent) {
+    function sendSaveChangesAjax(iElem, translation, action) {
 
-        let translationElem = elemParent.children("a").text();
         let translations = new Array(0);
-        translations.push(translationElem);
+        translations.push(translation);
+        //elemParent.prop("disabled", true);
+        showLoadInIcon(iElem);
         $.ajax({
             url: "AjaxControllerServlet",
             type: "POST",
@@ -104,7 +139,9 @@ $(document).ready(function () {
                 translations: translations
             },
             success: function (response) {
-                toggleIcon(elemParent.children("i"));
+                resetIconAfterLoad(iElem, action);
+                //toggleIcon(elemParent.children("i"));
+                //elemParent.prop("disabled", false);
             },
             error: handleAjaxError
         });

@@ -73,7 +73,7 @@
         </div>
     </div>
 
-    <div class="row my-5 text-center">
+    <div class="row my-5 text-center" style="max-height: 250px;">
 
         <div class="col-xl-5 my-2 col-12">
             <textarea class="form-control w-100 h-100 mb-3" placeholder="Print word to translate here" name="originWord"
@@ -83,8 +83,8 @@
         <div class="col-xl-2 col-auto">
         </div>
 
-        <div class="col-xl-5 my-2 col-12">
-            <ul class="list-unstyled" id="answers-list" style="overflow: auto; min-height: 100px; max-height: 200px">
+        <div class="col-xl-5 my-2 col-12 h-100">
+            <ul class="list-unstyled" id="answers-list" style="overflow: auto; min-height: 100px;">
             </ul>
         </div>
     </div>
