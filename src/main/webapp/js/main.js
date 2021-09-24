@@ -69,33 +69,20 @@ $(document).ready(function () {
     });
 
 
-    function showLoadInIcon(iElem){
-        iElem.removeClass("bi");
-        if(iElem.hasClass("free-translate-icon")){
-            iElem.removeClass("free-translate-icon");
-            iElem.removeClass("bi-dash");
+    function toggleLoadingAndIcon(iElem, action){
+        iElem.toggleClass("spinner-border");
+        iElem.toggleClass("spinner-border-sm");
+        iElem.toggleClass("bi");
+        if(action.localeCompare("delete")===0){
+            iElem.toggleClass("saved-translate-icon");
+            iElem.toggleClass("bi-suit-heart-fill");
         }else{
-            iElem.removeClass("saved-translate-icon");
-            iElem.removeClass("bi-suit-heart-fill");
-        }
-        iElem.addClass("spinner-border");
-        iElem.addClass("spinner-border-sm");
-    }
-
-    function recoverIconAfterLoad(iElem, madeAction){
-        iElem.removeClass("spinner-border");
-        iElem.removeClass("spinner-border-sm");
-        iElem.addClass("bi");
-        if(madeAction.localeCompare("delete")===0){
-            iElem.addClass("saved-translate-icon");
-            iElem.addClass("bi-suit-heart-fill");
-        }else{
-            iElem.addClass("free-translate-icon");
-            iElem.addClass("bi-dash");
+            iElem.toggleClass("free-translate-icon");
+            iElem.toggleClass("bi-dash");
         }
     }
 
-    function updateIconAfterLoad(iElem, madeAction){
+    function updateIconAfterSuccessSave(iElem, madeAction){
         iElem.removeClass("spinner-border");
         iElem.removeClass("spinner-border-sm");
         iElem.addClass("bi");
@@ -130,7 +117,7 @@ $(document).ready(function () {
         let translations = new Array(0);
         translations.push(translation);
         elemParent.prop('disabled',true);
-        showLoadInIcon(iElem);
+        toggleLoadingAndIcon(iElem, action);
         $.ajax({
             url: "AjaxControllerServlet",
             type: "POST",
@@ -141,13 +128,13 @@ $(document).ready(function () {
                 translations: translations
             },
             success: function (response) {
-                updateIconAfterLoad(iElem, action);
+                updateIconAfterSuccessSave(iElem, action);
             },
             complete: function (){
                 elemParent.prop('disabled',false);
             },
             error: function (xhr, textStatus, thrownError){
-                recoverIconAfterLoad(iElem, action);
+                toggleLoadingAndIcon(iElem, action);
                 handleAjaxError(xhr, textStatus, thrownError);
             }
         });
