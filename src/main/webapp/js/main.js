@@ -1,12 +1,5 @@
 $(document).ready(function () {
 
-    function handleAjaxError(xhr, textStatus, thrownError) {
-        alert("Code error: " + xhr.status + "\nMessage: " + xhr.responseText);
-        if (xhr.status === 401) {
-            window.location.href = 'ControllerServlet?command=forward&to=signIn';
-        }
-    }
-
     function showButtonLoading(elem) {
         $(elem).attr("regular-button-text", $(elem).html());
         $(elem).prop("disabled", true);
