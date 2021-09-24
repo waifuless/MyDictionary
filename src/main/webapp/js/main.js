@@ -13,7 +13,7 @@ $(document).ready(function () {
         $(elem).html('<i class="spinner-border spinner-border-sm"></i> Loading...');
     }
 
-    function showButtonReset(elem) {
+    function showButtonRecover(elem) {
         $(elem).prop("disabled", false);
         $(elem).html($(elem).attr("regular-button-text"));
     }
@@ -62,22 +62,11 @@ $(document).ready(function () {
                 });
             },
             complete: function () {
-                showButtonReset(button);
+                showButtonRecover(button);
             },
             error: handleAjaxError
         });
     });
-
-
-    /* Method to toggle icon without loading icon
-    function toggleIcon(iElem) {
-        iElem.toggleClass("bi-dash");
-        iElem.toggleClass("free-translate-icon");
-        iElem.toggleClass("bi-suit-heart-fill");
-        iElem.toggleClass("saved-translate-icon");
-    }
-
-     */
 
 
     function showLoadInIcon(iElem){
@@ -93,7 +82,20 @@ $(document).ready(function () {
         iElem.addClass("spinner-border-sm");
     }
 
-    function resetIconAfterLoad(iElem, madeAction){
+    function recoverIconAfterLoad(iElem, madeAction){
+        iElem.removeClass("spinner-border");
+        iElem.removeClass("spinner-border-sm");
+        iElem.addClass("bi");
+        if(madeAction.localeCompare("delete")===0){
+            iElem.addClass("saved-translate-icon");
+            iElem.addClass("bi-suit-heart-fill");
+        }else{
+            iElem.addClass("free-translate-icon");
+            iElem.addClass("bi-dash");
+        }
+    }
+
+    function updateIconAfterLoad(iElem, madeAction){
         iElem.removeClass("spinner-border");
         iElem.removeClass("spinner-border-sm");
         iElem.addClass("bi");
@@ -120,14 +122,14 @@ $(document).ready(function () {
         } else {
             action = "delete";
         }
-        sendSaveChangesAjax(iElem, translation, action);
+        sendSaveChangesAjax(elemParent, iElem, translation, action);
     });
 
-    function sendSaveChangesAjax(iElem, translation, action) {
 
+    function sendSaveChangesAjax(elemParent, iElem, translation, action) {
         let translations = new Array(0);
         translations.push(translation);
-        //elemParent.prop("disabled", true);
+        elemParent.prop('disabled',true);
         showLoadInIcon(iElem);
         $.ajax({
             url: "AjaxControllerServlet",
@@ -139,11 +141,15 @@ $(document).ready(function () {
                 translations: translations
             },
             success: function (response) {
-                resetIconAfterLoad(iElem, action);
-                //toggleIcon(elemParent.children("i"));
-                //elemParent.prop("disabled", false);
+                updateIconAfterLoad(iElem, action);
             },
-            error: handleAjaxError
+            complete: function (){
+                elemParent.prop('disabled',false);
+            },
+            error: function (xhr, textStatus, thrownError){
+                recoverIconAfterLoad(iElem, action);
+                handleAjaxError(xhr, textStatus, thrownError);
+            }
         });
     }
 });
