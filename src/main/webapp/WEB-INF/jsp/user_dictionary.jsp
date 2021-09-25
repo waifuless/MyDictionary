@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <jsp:include page="shortcut_icon.jsp"/>
     <title>MyDictionary</title>
     <script src="js/jquery-3.6.0.js"></script>
     <script src="js/languagesSelection.js"></script>
