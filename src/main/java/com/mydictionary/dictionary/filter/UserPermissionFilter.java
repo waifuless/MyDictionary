@@ -1,6 +1,7 @@
 package com.mydictionary.dictionary.filter;
 
 import com.mydictionary.dictionary.command_model.UserSessionAttribute;
+import com.mydictionary.dictionary.controller.PagePath;
 import com.mydictionary.dictionary.model.Role;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -58,6 +59,6 @@ public class UserPermissionFilter implements Filter {
 
     private void redirectClientToSignIn(HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect(PagePath.START_PAGE.getPath());
     }
 }

@@ -3,6 +3,7 @@ package com.mydictionary.dictionary.command;
 import com.mydictionary.dictionary.command_model.CommandRequest;
 import com.mydictionary.dictionary.command_model.CommandResponse;
 import com.mydictionary.dictionary.command_model.UserSessionAttribute;
+import com.mydictionary.dictionary.controller.PagePath;
 import com.mydictionary.dictionary.dao.UserManager;
 import com.mydictionary.dictionary.model.User;
 import jakarta.servlet.http.HttpSession;
@@ -33,10 +34,10 @@ public class SignIn implements Command {
         try {
             User user = userManager.findUserByEmailAndPassword(email, password);
             SignInUser(user, request);
-            return new CommandResponse(false, "WEB-INF/jsp/main.jsp");
+            return new CommandResponse(false, PagePath.MAIN.getPath());
         } catch (Exception ex) {
             request.setAttribute("errorMessage", ex.getMessage());
-            return new CommandResponse(false, "WEB-INF/jsp/exception.jsp");
+            return new CommandResponse(false, PagePath.ERROR.getPath());
         }
     }
 

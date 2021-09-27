@@ -2,6 +2,7 @@ package com.mydictionary.dictionary.command;
 
 import com.mydictionary.dictionary.command_model.CommandRequest;
 import com.mydictionary.dictionary.command_model.CommandResponse;
+import com.mydictionary.dictionary.controller.PagePath;
 
 public class Forward implements Command {
 
@@ -27,23 +28,23 @@ public class Forward implements Command {
         String path;
         switch (request.getParameter("to")) {
             case "registration":
-                path = "WEB-INF/jsp/registration.jsp";
+                path = PagePath.REGISTER.getPath();
                 break;
             case "signIn":
-                path = "WEB-INF/jsp/sign_in.jsp";
+                path = PagePath.SIGN_IN.getPath();
                 break;
             case "restorePassword":
-                path = "WEB-INF/jsp/restore_password.jsp";
+                path = PagePath.RESTORE_PASSWORD.getPath();
                 break;
             case "userDictionary":
-                path = "WEB-INF/jsp/user_dictionary.jsp";
+                path = PagePath.USER_DICTIONARY.getPath();
                 break;
             case "main":
-                path = "WEB-INF/jsp/main.jsp";
+                path = PagePath.MAIN.getPath();
                 break;
             default:
                 request.setAttribute("errorMessage", "unknown forward location");
-                path = "WEB-INF/jsp/FuckedUpException";
+                path = PagePath.ERROR.getPath();
                 break;
         }
         return new CommandResponse(false, path);
