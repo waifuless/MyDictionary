@@ -43,6 +43,9 @@ public class Register implements Command {
         try {
             Set<RegisterError> errorSet = validateParameters(userManager, email, password, passwordRepeat);
             if (errorSet.size() > 0) {
+                if(email!=null) {
+                    request.setAttribute("email", email);
+                }
                 request.setAttribute(ERROR_ATTRIBUTE_NAME, errorSet);
                 return new CommandResponse(false, PagePath.REGISTER.getPath());
             }
