@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
 <html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
@@ -18,18 +19,35 @@
         <h1>Sign in</h1>
     </div>
     <div class="col-md-3 mx-auto my-3" style="max-width: 330px">
-        <form action="${pageContext.request.contextPath}/ControllerServlet?command=register" method="post">
+        <form class="needs-validation" action="${pageContext.request.contextPath}/ControllerServlet?command=register"
+              method="post">
             <div class="form-floating my-2">
-                <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com">
-                <label for="floatingInput">Email address</label>
+                <input type="email" class="form-control <c:if test="${requestScope.EMAIL_INVALID!=null}">is-invalid</c:if>"
+                       id="emailInput" name="email" placeholder="name@example.com"
+                       <c:if test="${not empty requestScope.email}">value="${requestScope.email}"</c:if>>
+                <label for="emailInput">Email address</label>
+                <div class="invalid-feedback">
+                    <c:if test="${requestScope.EMAIL_INVALID=='EMAIL_INVALID'}">Email invalid</c:if>
+                    <c:if test="${requestScope.EMAIL_INVALID=='USER_WITH_EMAIL_ALREADY_EXISTS'}">User with this email
+                        already exists</c:if>
+                </div>
             </div>
             <div class="form-floating my-2">
-                <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password">
-                <label for="floatingPassword">Password</label>
+                <input type="password" class="form-control <c:if test="${requestScope.PASSWORD_INVALID!=null}">
+                is-invalid</c:if>" id="PasswordInput" name="password" placeholder="Password">
+                <label for="PasswordInput">Password</label>
+                <div class="invalid-feedback">
+                    Password invalid(size should be >=8 and <=256)
+                </div>
             </div>
             <div class="form-floating my-2">
-                <input type="password" class="form-control" id="floatingPasswordRepeat" name="passwordRepeat" placeholder="Repeat password">
-                <label for="floatingPasswordRepeat">Repeat password</label>
+                <input type="password" class="form-control <c:if test="${requestScope.PASSWORDS_NOT_MATCH!=null}">
+                is-invalid</c:if>" id="PasswordRepeatInput" name="passwordRepeat"
+                       placeholder="Repeat password">
+                <label for="PasswordRepeatInput">Repeat password</label>
+                <div class="invalid-feedback">
+                    Passwords should be equals
+                </div>
             </div>
             <button type="submit" class="btn btn-primary w-100">Register</button>
         </form>

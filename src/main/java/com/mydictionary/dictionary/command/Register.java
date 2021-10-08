@@ -7,13 +7,11 @@ import com.mydictionary.dictionary.dao.UserManager;
 import com.mydictionary.dictionary.model.UserFactory;
 
 import java.sql.SQLException;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 public class Register implements Command {
 
-    private final static String ERROR_ATTRIBUTE_NAME = "registerErrors";
     public final static Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
     public final static int MAX_EMAIL_LENGTH = 254;
@@ -41,12 +39,11 @@ public class Register implements Command {
         String passwordRepeat = request.getParameter("passwordRepeat");
         UserManager userManager = UserManager.getInstance();
         try {
-            Set<RegisterError> errorSet = validateParameters(userManager, email, password, passwordRepeat);
-            if (errorSet.size() > 0) {
+            boolean valid = validateParametersAndSetErrors(request, userManager, email, password, passwordRepeat);
+            if (!valid) {
                 if(email!=null) {
                     request.setAttribute("email", email);
                 }
-                request.setAttribute(ERROR_ATTRIBUTE_NAME, errorSet);
                 return new CommandResponse(false, PagePath.REGISTER.getPath());
             }
             userManager.save(UserFactory.getInstance().createUser(-1, email, password));
@@ -66,30 +63,40 @@ public class Register implements Command {
                 && email.length() <= MAX_EMAIL_LENGTH;
     }
 
-    private Set<RegisterError> validateParameters(UserManager userManager,
+    private boolean validateParametersAndSetErrors(CommandRequest request, UserManager userManager,
                                                   String email, String password, String passwordRepeat)
             throws SQLException {
 
-        Set<RegisterError> errorSet = new HashSet<>();
+        boolean valid = true;
         if (!isEMailValid(email)) {
-            errorSet.add(RegisterError.EMAIL_INVALID);
+            valid = false;
+            request.setAttribute(RegisterError.EMAIL_INVALID.name(), RegisterError.EMAIL_INVALID);
         }
         if (userManager.isUserExist(email)) {
-            errorSet.add(RegisterError.USER_WITH_EMAIL_ALREADY_EXISTS);
+            valid = false;
+            request.setAttribute(RegisterError.EMAIL_INVALID.name(),
+                    RegisterError.USER_WITH_EMAIL_ALREADY_EXISTS);
         }
         if (!isPasswordValid(password)) {
-            errorSet.add(RegisterError.PASSWORD_NOT_MEET_THE_REQUIREMENTS);
+            valid = false;
+            request.setAttribute(RegisterError.PASSWORD_INVALID.name(),
+                    RegisterError.PASSWORD_INVALID);
         }
         if (!password.equals(passwordRepeat)) {
-            errorSet.add(RegisterError.PASSWORDS_NOT_MATCH);
+            valid = false;
+            request.setAttribute(RegisterError.PASSWORDS_NOT_MATCH.name(), RegisterError.PASSWORDS_NOT_MATCH);
         }
-        return errorSet;
+        return valid;
+    }
+
+    private void setErrors(CommandRequest request, Set<RegisterError> errors){
+
     }
 
     public enum RegisterError {
         EMAIL_INVALID,
         USER_WITH_EMAIL_ALREADY_EXISTS,
-        PASSWORD_NOT_MEET_THE_REQUIREMENTS,
-        PASSWORDS_NOT_MATCH
+        PASSWORD_INVALID,
+        PASSWORDS_NOT_MATCH;
     }
 }
