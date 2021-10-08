@@ -17,13 +17,15 @@ public class PostgresDataManager implements DataManager {
     private final static String WORD_ID_COLUMN = "word_id";
     private final static String TRANSLATION_ID_COLUMN = "translation_id";
     private final static String FIND_WORD_ID_QUERY =
-            "SELECT word_id FROM dictionary WHERE word=? AND language=?;";
+            "SELECT word_id AS word_id FROM dictionary WHERE word=? AND language=?;";
     private final static String INSERT_WORD_AND_RETURN_IT_ID_QUERY =
-            "INSERT INTO dictionary(word, language) VALUES(?, ?) RETURNING word_id;";
+            "INSERT INTO dictionary(word, language) VALUES(?, ?) RETURNING word_id AS word_id;";
     private final static String FIND_TRANSLATION_ID_QUERY =
-            "SELECT translation_id FROM translation_set WHERE origin_word_id=? AND translation_word_id=?;";
+            "SELECT translation_id AS translation_id FROM translation_set WHERE origin_word_id=?" +
+                    "AND translation_word_id=?;";
     private final static String INSERT_TRANSLATION_AND_RETURN_IT_ID_QUERY =
-            "INSERT INTO translation_set(origin_word_id, translation_word_id) VALUES(?, ?) RETURNING translation_id;";
+            "INSERT INTO translation_set(origin_word_id, translation_word_id) VALUES(?, ?)" +
+                    "RETURNING translation_id AS translation_id;";
     private final static String INSERT_TRANSLATION_TO_USER_VOCABULARY_QUERY =
             "INSERT INTO user_vocabulary(user_id, translation_id) VALUES(?, ?) ON CONFLICT DO NOTHING;";
     private final static String READ_WORD_TRANSLATIONS_QUERY =
@@ -65,9 +67,11 @@ public class PostgresDataManager implements DataManager {
     private static volatile PostgresDataManager instance;
 
     private final ConnectionPool connectionPool;
+    private final StatementPreparator preparator;
 
     private PostgresDataManager() {
         connectionPool = ConnectionPool.getInstance();
+        preparator = StatementPreparator.getInstance();
     }
 
     public static PostgresDataManager getInstance() {
@@ -87,31 +91,25 @@ public class PostgresDataManager implements DataManager {
             throws SQLException {
         try (Connection connection = connectionPool.getConnection()) {
             try (PreparedStatement findWordStatement = connection.prepareStatement(FIND_WORD_ID_QUERY);
-            PreparedStatement insertWordStatement = connection.prepareStatement(INSERT_WORD_AND_RETURN_IT_ID_QUERY);
-            PreparedStatement findTranslationStatement = connection.prepareStatement(FIND_TRANSLATION_ID_QUERY);
-            PreparedStatement insertTranslationStatement = connection
-                    .prepareStatement(INSERT_TRANSLATION_AND_RETURN_IT_ID_QUERY);
-            PreparedStatement insertTranslationToUserStatement = connection
-                    .prepareStatement(INSERT_TRANSLATION_TO_USER_VOCABULARY_QUERY)) {
-                int originWordId = findWordId(findWordStatement, properties.getOriginWord(), properties.getSrcLangCode());
-                if (originWordId < MINIMAL_INDEX_VALUE) {
-                    originWordId = insertWord(insertWordStatement, properties.getOriginWord(), properties.getSrcLangCode());
-                }
+                 PreparedStatement insertWordStatement = connection
+                         .prepareStatement(INSERT_WORD_AND_RETURN_IT_ID_QUERY);
+                 PreparedStatement findTranslationStatement = connection.prepareStatement(FIND_TRANSLATION_ID_QUERY);
+                 PreparedStatement insertTranslationStatement = connection
+                         .prepareStatement(INSERT_TRANSLATION_AND_RETURN_IT_ID_QUERY);
+                 PreparedStatement insertTranslationToUserVocabularyStatement = connection
+                         .prepareStatement(INSERT_TRANSLATION_TO_USER_VOCABULARY_QUERY)) {
+
+                int originWordId = insertIfDoesNotExist(findWordStatement, insertWordStatement, WORD_ID_COLUMN,
+                        properties.getOriginWord(), properties.getSrcLangCode());
                 int translationWordId;
                 int translationId;
                 String destLangCode = properties.getDestLangCode();
                 for (String translationWord : translations) {
-                    translationWordId = findWordId(findWordStatement, translationWord, destLangCode);
-                    if (translationWordId < MINIMAL_INDEX_VALUE) {
-                        translationWordId = insertWord(insertWordStatement, translationWord, destLangCode);
-                    }
-                    translationId = findTranslationId(findTranslationStatement, originWordId, translationWordId);
-                    if (translationId < MINIMAL_INDEX_VALUE) {
-                        translationId = insertTranslation(insertTranslationStatement, originWordId, translationWordId);
-                    }
-                    insertTranslationToUserStatement.setInt(1, properties.getUserId());
-                    insertTranslationToUserStatement.setInt(2, translationId);
-                    insertTranslationToUserStatement.execute();
+                    translationWordId = insertIfDoesNotExist(findWordStatement, insertWordStatement, WORD_ID_COLUMN,
+                            translationWord, destLangCode);
+                    translationId = insertIfDoesNotExist(findTranslationStatement, insertTranslationStatement,
+                            TRANSLATION_ID_COLUMN, originWordId, translationWordId);
+                    insertData(insertTranslationToUserVocabularyStatement, properties.getUserId(), translationId);
                 }
             }
         }
@@ -120,10 +118,12 @@ public class PostgresDataManager implements DataManager {
     @Override
     public List<String> readWordTranslations(PropertiesWithOriginWord properties) throws SQLException {
         try (Connection connection = connectionPool.getConnection()) {
-            try (Statement statement = connection.createStatement()) {
-                ResultSet resultSet = statement.executeQuery(String.format(READ_WORD_TRANSLATIONS_QUERY,
-                        properties.getUserId(), properties.getOriginWord(),
-                        properties.getSrcLangCode(), properties.getDestLangCode()));
+            try (PreparedStatement statement = connection.prepareStatement(READ_WORD_TRANSLATIONS_QUERY)) {
+                statement.setInt(1, properties.getUserId());
+                statement.setString(2, properties.getOriginWord());
+                statement.setString(3, properties.getSrcLangCode());
+                statement.setString(4, properties.getDestLangCode());
+                ResultSet resultSet = statement.executeQuery();
                 List<String> translations = new ArrayList<>();
                 while (resultSet.next()) {
                     translations.add(resultSet.getString(TRANSLATION_COLUMN));
@@ -137,11 +137,11 @@ public class PostgresDataManager implements DataManager {
     public Map<String, List<String>> readAllTranslationsByProperties(BasicProperties properties)
             throws SQLException {
         try (Connection connection = connectionPool.getConnection()) {
-            try (PreparedStatement dataQuery = connection.prepareStatement(READ_ALL_TRANSLATIONS_QUERY)) {
-                dataQuery.setInt(1, properties.getUserId());
-                dataQuery.setString(2, properties.getSrcLangCode());
-                dataQuery.setString(3, properties.getDestLangCode());
-                ResultSet resultSet = dataQuery.executeQuery();
+            try (PreparedStatement statement = connection.prepareStatement(READ_ALL_TRANSLATIONS_QUERY)) {
+                statement.setInt(1, properties.getUserId());
+                statement.setString(2, properties.getSrcLangCode());
+                statement.setString(3, properties.getDestLangCode());
+                ResultSet resultSet = statement.executeQuery();
                 Map<String, List<String>> wordWithTranslations = new HashMap<>();
                 String key;
                 List<String> values;
@@ -164,15 +164,16 @@ public class PostgresDataManager implements DataManager {
     public void deleteTranslations(PropertiesWithOriginWord properties, List<String> translations)
             throws SQLException {
         try (Connection connection = connectionPool.getConnection()) {
-            try (Statement dataQuery = connection.createStatement()) {
-                final int userId = properties.getUserId();
-                final String word = properties.getOriginWord();
-                final String srcLangCode = properties.getSrcLangCode();
-                final String destLangCode = properties.getDestLangCode();
+            try (PreparedStatement statement = connection.prepareStatement(DELETE_WORD_TRANSLATIONS_QUERY)) {
+                statement.setInt(1, properties.getUserId());
+                statement.setString(2, properties.getOriginWord());
+                //translation is third parameter
+                statement.setString(4, properties.getSrcLangCode());
+                statement.setString(5, properties.getDestLangCode());
                 //In loop delete rows which differ only in translation
                 for (String translation : translations) {
-                    dataQuery.execute(String.format(DELETE_WORD_TRANSLATIONS_QUERY,
-                            userId, word, translation, srcLangCode, destLangCode));
+                    statement.setString(3, translation);
+                    statement.execute();
                 }
             }
         }
@@ -181,8 +182,8 @@ public class PostgresDataManager implements DataManager {
     @Override
     public void deleteUnusedWords() throws SQLException {
         try (Connection connection = connectionPool.getConnection()) {
-            try (Statement dataQuery = connection.createStatement()) {
-                dataQuery.execute(DELETE_UNUSED_WORDS_QUERY);
+            try (Statement statement = connection.createStatement()) {
+                statement.execute(DELETE_UNUSED_WORDS_QUERY);
             }
         }
     }
@@ -192,29 +193,25 @@ public class PostgresDataManager implements DataManager {
         connectionPool.close();
     }
 
-    /**
-     * @return -1 if word do not exist
-     */
-    private int findWordId(PreparedStatement preparedStatement, String word, String language) throws SQLException {
-        preparedStatement.setString(1, word);
-        preparedStatement.setString(2, language);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            return resultSet.getInt(WORD_ID_COLUMN);
+    private int insertIfDoesNotExist(PreparedStatement findStatement, PreparedStatement insertStatement,
+                                     String retrieveColumn, Object param, Object... params) throws SQLException {
+        int originWordId = findDataId(findStatement, retrieveColumn, param, params);
+        if (originWordId < MINIMAL_INDEX_VALUE) {
+            originWordId = insertDataAndRetrieveIndex(insertStatement, retrieveColumn, param, params);
         }
-        return -1;
+        return originWordId;
     }
 
     /**
      * @return -1 if translation do not exist
      */
-    private int findTranslationId(PreparedStatement preparedStatement, int originWordId, int translationWordId)
+    private int findDataId(PreparedStatement preparedStatement, String retrieveColumn, Object param,
+                           Object... params)
             throws SQLException {
-        preparedStatement.setInt(1, originWordId);
-        preparedStatement.setInt(2, translationWordId);
+        preparator.prepare(preparedStatement, param, params);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
-            return resultSet.getInt(TRANSLATION_ID_COLUMN);
+            return resultSet.getInt(retrieveColumn);
         }
         return -1;
     }
@@ -222,32 +219,18 @@ public class PostgresDataManager implements DataManager {
     /**
      * @return id of new word
      */
-    private int insertWord(PreparedStatement preparedStatement, String word, String language) throws SQLException {
-        preparedStatement.setString(1, word);
-        preparedStatement.setString(2, language);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        return resultSet.getInt(WORD_ID_COLUMN);
-    }
-
-    /**
-     * @return id of new translation
-     */
-    private int insertTranslation(PreparedStatement preparedStatement, int originWordId, int translationWordId)
+    private int insertDataAndRetrieveIndex(PreparedStatement preparedStatement, String retrieveColumn,
+                                           Object param, Object... params)
             throws SQLException {
-        setParametersToPreparedStatement(preparedStatement, originWordId, translationWordId);
+        preparator.prepare(preparedStatement, param, params);
         ResultSet resultSet = preparedStatement.executeQuery();
         resultSet.next();
-        return resultSet.getInt(TRANSLATION_ID_COLUMN);
+        return resultSet.getInt(retrieveColumn);
     }
 
-    private void setParametersToPreparedStatement(PreparedStatement preparedStatement, Object... parameters)
-            throws SQLException{
-        if(parameters!=null && preparedStatement!=null && parameters.length>0){
-            for (int i = 1; i<parameters.length; i++) {
-                preparedStatement.setObject(i+1, parameters[i]);
-            }
-        }
+    private void insertData(PreparedStatement preparedStatement, Object param, Object... params)
+            throws SQLException {
+        preparator.prepare(preparedStatement, param, params);
+        preparedStatement.execute();
     }
-
 }
